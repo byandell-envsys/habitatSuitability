@@ -18,6 +18,11 @@ Your workflow should:
 [USFS National Grasslands](https://www.fs.usda.gov/managing-land/national-forests-grasslands/national-grasslands)
 via the
 [Units ZIPfile](https://data.fs.usda.gov/geodata/edw/edw_resources/shp/S_USA.NationalGrassland.zip) and select **at least 2** as study sites.
+    - <https://www.nature.com/articles/srep24441>
+    - <https://www.fs.usda.gov/visit/maps>
+    - <https://www.arcgis.com/home/item.html?id=c5805dc9c5e14151b90efd00f02b82bb>
+    - <https://data-usfs.hub.arcgis.com/datasets/usfs::national-grassland-units-feature-layer/explore>
+    - <https://www.fs.usda.gov/maps/forest-maps.shtml>
 3. **Fit a model:** For each grassland:
     1. **Download model variables** as raster layers covering your study area envelope, including:
         - At least one **soil** variable from the [POLARIS dataset](http://hydrology.cee.duke.edu/POLARIS/PROPERTIES/v1.0/)
