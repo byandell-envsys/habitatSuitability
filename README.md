@@ -10,6 +10,12 @@ Need DOI
 
 In this project, you will create a habitat suitability model for Sorghastrum nutans (or a plant species of your choice), a grass native to North America. [In the past 50 years, its range has moved northward](https://www.gbif.org/species/2704414). The model will be based on combining multiple data layers related to soil, topography, and climate. You will also demonstrate the coding skills covered in this class by creating a modular, reproducible workflow for the model.
 
+Due 15 Dec. Some useful links:
+
+- [Habitat Suitability Coding Challenges](https://cu-esiil-edu.github.io/esiil-learning-portal/foundations/notebooks/08-habitat/habitat.html)
+- [Final Projects 2023](https://github.com/earthlab-education/Earth-Analytics-2023-01-Intro/blob/main/analysis/final.md)
+- [Subtract Rasters in Python](https://www.earthdatascience.org/courses/use-data-open-source-python/intro-raster-data-python/raster-data-processing/subtract-rasters-in-python/)
+
 ## You will create a reproducible scientific workflow
 
 Your workflow should:
