@@ -4,7 +4,7 @@ Habitat Suitability
 See
 [Habitat Suitability #603](https://github.com/earthlab-education/Earth-Analytics-AY24/issues/603).
 
-Need DOI
+Need [DOI](https://help.zenodo.org/docs/deposit/describe-records/reserve-doi/)
 
 ## [Our changing climate is changing where key grassland species can live, and grassland management and restoration practices will need to take this into account.](https://www.frontiersin.org/articles/10.3389/fpls.2017.00730/full)
 
