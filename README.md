@@ -27,8 +27,13 @@ via the
 2. **Fit a model:** For each grassland:
     1. **Download model variables** as raster layers covering your study area envelope, including:
         - At least one **soil** variable from the [POLARIS dataset](http://hydrology.cee.duke.edu/POLARIS/PROPERTIES/v1.0/) (**find thresholds**)
+            - <https://scholars.duke.edu/publication/1381493>
+            - <https://gee-community-catalog.org/projects/polaris/>
         - Elevation from the SRTM (available from the [earthaccess API](https://github.com/nsidc/earthaccess/))
-        - At least one **climate** variable from the [MACAv2 THREDDS data server](http://thredds.northwestknowledge.net:8080/thredds/reacch_climate_CMIP5_macav2_catalog2.html). Your project should compare **two climate scenarios** of your choice (e.g. different time periods, different emission scenarios). You can find a tutorial on how to access these climate data on [earthdatascience.org](https://www.earthdatascience.org/courses/use-data-open-source-python/hierarchical-data-formats-hdf/intro-to-MACAv2-cmip5-data/)
+        - At least one **climate** variable from the [MACAv2 THREDDS data server](http://thredds.northwestknowledge.net:8080/thredds/reacch_climate_CMIP5_macav2_catalog2.html).
+            - Pick 2 of these
+            - <https://docs.geonetwork-opensource.org/3.12/user-guide/harvesting/harvesting-thredds/> 
+Your project should compare **two climate scenarios** of your choice (e.g. different time periods, different emission scenarios). You can find a tutorial on how to access these climate data on [earthdatascience.org](https://www.earthdatascience.org/courses/use-data-open-source-python/hierarchical-data-formats-hdf/intro-to-MACAv2-cmip5-data/)
      2. **Calculate at least one derived **topographic** variable** (slope or aspect) to use in your model. You probably will wish to use the `xarray-spatial` library, which is available in the latest earth-analytics-python environment (but will need to be installed/updated if you are working on your own machine). Note that calculated slope may not be correct if you are using a CRS with units of *degrees*; you should re-project into a projected coordinate system with units of *meters*, such as the appropriate UTM Zone.
      3. **Harmonize your data** - make sure that the grids for each of your layers match up. Check out the [`ds.rio.reproject_match()` method](https://corteva.github.io/rioxarray/stable/examples/reproject_match.html#Reproject-Match) from `rioxarray`.
      4. **Build your model**. You can use any model you wish, so long as you explain your choice. However, if you are not sure what to do, we recommend building a **fuzzy logic** model (see below).
@@ -38,6 +43,7 @@ via the
    - assumptions
    - findings
    - visualization
+   - [Zenodo DOI](https://help.zenodo.org/docs/deposit/describe-records/reserve-doi/) **get account on Zenodo**
 
 ## If you are unsure about which model to use, we recommend using a fuzzy logic model
 
