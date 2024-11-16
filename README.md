@@ -24,13 +24,19 @@ Your workflow should:
 [USFS National Grasslands](https://www.fs.usda.gov/managing-land/national-forests-grasslands/national-grasslands)
 via the
 [Units ZIPfile](https://data.fs.usda.gov/geodata/edw/edw_resources/shp/S_USA.NationalGrassland.zip) and select **at least 2** as study sites.
+
+- Resources:
     - Duan, K., Sun, G., Sun, S. et al. Divergence of ecosystem services in U.S. National Forests and Grasslands under a changing climate. Sci Rep 6, 24441 (2016). [DOI: 10.1038/srep24441](https://doi.org/10.1038/srep24441)
     - <https://www.fs.usda.gov/visit/maps>
     - <https://www.arcgis.com/home/item.html?id=c5805dc9c5e14151b90efd00f02b82bb>
     - [USFS ArcGIS Grassland Units[(https://data-usfs.hub.arcgis.com/datasets/usfs::national-grassland-units-feature-layer/explore?location=41.300146%2C-107.829591%2C6.23)
     - <https://www.fs.usda.gov/maps/forest-maps.shtml>
     - Great resource for plant growth characteristics: <https://plants.usda.gov/>
-2. **Fit a model:** For each grassland:
+- Yandell Proposed Study Sites:
+    - Buffalo Gap National Grassland (OBJECTID 186937, NATIONALGRASSLANDID 295518010328)	
+    - Oglala National Grassland (OBJECTID 186940, NATIONALGRASSLANDID 295521010328)
+   
+3. **Fit a model:** For each grassland:
     1. **Download model variables** as raster layers covering your study area envelope, including:
         - At least one **soil** variable from the [POLARIS dataset](http://hydrology.cee.duke.edu/POLARIS/PROPERTIES/v1.0/) (**find thresholds**)
             - <https://scholars.duke.edu/publication/1381493>
@@ -43,7 +49,7 @@ Your project should compare **two climate scenarios** of your choice (e.g. diffe
      2. **Calculate at least one derived **topographic** variable** (slope or aspect) to use in your model. You probably will wish to use the `xarray-spatial` library, which is available in the latest earth-analytics-python environment (but will need to be installed/updated if you are working on your own machine). Note that calculated slope may not be correct if you are using a CRS with units of *degrees*; you should re-project into a projected coordinate system with units of *meters*, such as the appropriate UTM Zone.
      3. **Harmonize your data** - make sure that the grids for each of your layers match up. Check out the [`ds.rio.reproject_match()` method](https://corteva.github.io/rioxarray/stable/examples/reproject_match.html#Reproject-Match) from `rioxarray`.
      4. **Build your model**. You can use any model you wish, so long as you explain your choice. However, if you are not sure what to do, we recommend building a **fuzzy logic** model (see below).
-3. **Present your results** in at least one figure for each grassland/climate scenario combination.
+4. **Present your results** in at least one figure for each grassland/climate scenario combination.
    - project site
    - model
    - assumptions
