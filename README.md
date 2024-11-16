@@ -35,8 +35,12 @@ via the
 - Yandell Proposed Study Sites:
     - [Buffalo Gap National Grassland](https://www.fs.usda.gov/recarea/nebraska/recarea/?recid=30329)
 [Recreation Area](https://www.fs.usda.gov/detail/r2/recreation?cid=stelprdb5389082)
+[Data Download](https://data-usfs.hub.arcgis.com/datasets/usfs::national-grassland-units-feature-layer/explore?location=43.534637%2C-102.565490%2C8.34)
 (OBJECTID 186937, NATIONALGRASSLANDID 295518010328)	
-    - Oglala National Grassland (OBJECTID 186940, NATIONALGRASSLANDID 295521010328)
+    - [Oglala National Grassland](https://www.fs.usda.gov/recarea/nebraska/recarea/?recid=30328)
+[Visit](https://visitnebraska.com/harrison/oglala-national-grassland)
+[Data Download](https://data-usfs.hub.arcgis.com/datasets/usfs::national-grassland-units-feature-layer/explore?location=43.509639%2C-102.570535%2C8.36)
+(OBJECTID 186940, NATIONALGRASSLANDID 295521010328)
    
 3. **Fit a model:** For each grassland:
     1. **Download model variables** as raster layers covering your study area envelope, including:
