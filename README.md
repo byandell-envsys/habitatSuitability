@@ -30,6 +30,7 @@ via the
     - [USFS Maps](https://www.fs.usda.gov/visit/maps)
         - [USFS ArcGIS Grassland Units](https://data-usfs.hub.arcgis.com/datasets/usfs::national-grassland-units-feature-layer/explore?location=41.300146%2C-107.829591%2C6.23)
         - [USFS IVM Digital Map](https://www.fs.usda.gov/ivm/)
+        - [Download PDF or JPG Map](https://experience.arcgis.com/experience/9ab8d03e2bec4d7fbfc27ba836e70aed/page/Forest-Series/#data_s=id%3AdataSource_2-Forest_Series_Index_6205%3A1430)
     - [ArcGIS Map Viewer](https://www.arcgis.com/home/webmap/viewer.html)
     - Great resource for plant growth characteristics: <https://plants.usda.gov/>
 - Yandell Proposed Study Sites:
