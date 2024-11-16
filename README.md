@@ -27,10 +27,10 @@ via the
 
 - Resources:
     - Duan, K., Sun, G., Sun, S. et al. Divergence of ecosystem services in U.S. National Forests and Grasslands under a changing climate. Sci Rep 6, 24441 (2016). [DOI: 10.1038/srep24441](https://doi.org/10.1038/srep24441)
-    - <https://www.fs.usda.gov/visit/maps>
-    - [USFS ArcGIS Grassland Units](https://data-usfs.hub.arcgis.com/datasets/usfs::national-grassland-units-feature-layer/explore?location=41.300146%2C-107.829591%2C6.23)
+    - [USFS Maps](https://www.fs.usda.gov/visit/maps)
+        - [USFS ArcGIS Grassland Units](https://data-usfs.hub.arcgis.com/datasets/usfs::national-grassland-units-feature-layer/explore?location=41.300146%2C-107.829591%2C6.23)
+        - [USFS IVM Digital Map](https://www.fs.usda.gov/ivm/)
     - [ArcGIS Map Viewer](https://www.arcgis.com/home/webmap/viewer.html)
-    - <https://www.fs.usda.gov/maps/forest-maps.shtml>
     - Great resource for plant growth characteristics: <https://plants.usda.gov/>
 - Yandell Proposed Study Sites:
     - [Buffalo Gap National Grassland](https://www.fs.usda.gov/recarea/nebraska/recarea/?recid=30329)
