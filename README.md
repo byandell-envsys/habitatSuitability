@@ -33,7 +33,9 @@ via the
     - <https://www.fs.usda.gov/maps/forest-maps.shtml>
     - Great resource for plant growth characteristics: <https://plants.usda.gov/>
 - Yandell Proposed Study Sites:
-    - [Buffalo Gap National Grassland](https://www.fs.usda.gov/recarea/nebraska/recarea/?recid=30329) (OBJECTID 186937, NATIONALGRASSLANDID 295518010328)	
+    - [Buffalo Gap National Grassland](https://www.fs.usda.gov/recarea/nebraska/recarea/?recid=30329)
+[Recreation Area](https://www.fs.usda.gov/detail/r2/recreation?cid=stelprdb5389082)
+(OBJECTID 186937, NATIONALGRASSLANDID 295518010328)	
     - Oglala National Grassland (OBJECTID 186940, NATIONALGRASSLANDID 295521010328)
    
 3. **Fit a model:** For each grassland:
