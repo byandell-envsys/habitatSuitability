@@ -24,7 +24,7 @@ Your workflow should:
 [USFS National Grasslands](https://www.fs.usda.gov/managing-land/national-forests-grasslands/national-grasslands)
 via the
 [Units ZIPfile](https://data.fs.usda.gov/geodata/edw/edw_resources/shp/S_USA.NationalGrassland.zip) and select **at least 2** as study sites.
-    - <https://www.nature.com/articles/srep24441>
+    - Duan, K., Sun, G., Sun, S. et al. Divergence of ecosystem services in U.S. National Forests and Grasslands under a changing climate. Sci Rep 6, 24441 (2016). [DOI: 10.1038/srep24441](https://doi.org/10.1038/srep24441)
     - <https://www.fs.usda.gov/visit/maps>
     - <https://www.arcgis.com/home/item.html?id=c5805dc9c5e14151b90efd00f02b82bb>
     - <https://data-usfs.hub.arcgis.com/datasets/usfs::national-grassland-units-feature-layer/explore>
