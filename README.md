@@ -8,7 +8,7 @@ Need [DOI](https://help.zenodo.org/docs/deposit/describe-records/reserve-doi/)
 
 ## [Our changing climate is changing where key grassland species can live, and grassland management and restoration practices will need to take this into account.](https://www.frontiersin.org/articles/10.3389/fpls.2017.00730/full)
 
-In this project, you will create a habitat suitability model for Sorghastrum nutans (or a plant species of your choice), a grass native to North America. [In the past 50 years, its range has moved northward](https://www.gbif.org/species/2704414). The model will be based on combining multiple data layers related to soil, topography, and climate. You will also demonstrate the coding skills covered in this class by creating a modular, reproducible workflow for the model.
+In this project, you will create a habitat suitability model for _Sorghastrum nutans_ (or a plant species of your choice), a grass native to North America. [In the past 50 years, its range has moved northward](https://www.gbif.org/species/2704414). The model will be based on combining multiple data layers related to soil, topography, and climate. You will also demonstrate the coding skills covered in this class by creating a modular, reproducible workflow for the model.
 
 Due 15 Dec. Some useful links:
 
@@ -43,7 +43,7 @@ via the
 [Data Download](https://data-usfs.hub.arcgis.com/datasets/usfs::national-grassland-units-feature-layer/explore?location=43.509639%2C-102.570535%2C8.36)
 (OBJECTID 186940, NATIONALGRASSLANDID 295521010328)
    
-3. **Fit a model:** For each grassland:
+2. **Fit a model:** For each grassland:
     1. **Download model variables** as raster layers covering your study area envelope, including:
         - At least one **soil** variable from the [POLARIS dataset](http://hydrology.cee.duke.edu/POLARIS/PROPERTIES/v1.0/) (**find thresholds**)
             - <https://scholars.duke.edu/publication/1381493>
@@ -56,7 +56,7 @@ Your project should compare **two climate scenarios** of your choice (e.g. diffe
      2. **Calculate at least one derived **topographic** variable** (slope or aspect) to use in your model. You probably will wish to use the `xarray-spatial` library, which is available in the latest earth-analytics-python environment (but will need to be installed/updated if you are working on your own machine). Note that calculated slope may not be correct if you are using a CRS with units of *degrees*; you should re-project into a projected coordinate system with units of *meters*, such as the appropriate UTM Zone.
      3. **Harmonize your data** - make sure that the grids for each of your layers match up. Check out the [`ds.rio.reproject_match()` method](https://corteva.github.io/rioxarray/stable/examples/reproject_match.html#Reproject-Match) from `rioxarray`.
      4. **Build your model**. You can use any model you wish, so long as you explain your choice. However, if you are not sure what to do, we recommend building a **fuzzy logic** model (see below).
-4. **Present your results** in at least one figure for each grassland/climate scenario combination.
+3. **Present your results** in at least one figure for each grassland/climate scenario combination.
    - project site
    - model
    - assumptions
