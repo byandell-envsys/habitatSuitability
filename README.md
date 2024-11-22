@@ -51,9 +51,8 @@ via the
         - Elevation from the SRTM (available from the [earthaccess API](https://github.com/nsidc/earthaccess/))
             - this is the hardest one to work with! 
         - At least one **climate** variable from the [MACAv2 THREDDS data server](http://thredds.northwestknowledge.net:8080/thredds/reacch_climate_CMIP5_macav2_catalog2.html).
-            - Pick 2 of these
-            - <https://docs.geonetwork-opensource.org/3.12/user-guide/harvesting/harvesting-thredds/> 
-Your project should compare **two climate scenarios** of your choice (e.g. different time periods, different emission scenarios). You can find a tutorial on how to access these climate data on [earthdatascience.org](https://www.earthdatascience.org/courses/use-data-open-source-python/hierarchical-data-formats-hdf/intro-to-MACAv2-cmip5-data/)
+            - Compare **two climate scenarios** of your choice (e.g. different time periods, different emission scenarios) 
+            - [GeoNetwork: Harvesting THREDDS](https://docs.geonetwork-opensource.org/3.12/user-guide/harvesting/harvesting-thredds/)
             - [EDA Lesson 2. Intro to CMIP and MACA v2 Climate Data](https://www.earthdatascience.org/courses/use-data-open-source-python/hierarchical-data-formats-hdf/intro-to-MACAv2-cmip5-data/)
         - [NASA  Earth Observation Data](https://earthdata.nasa.gov/)
      2. **Calculate at least one derived **topographic** variable** (slope or aspect) to use in your model. You probably will wish to use the `xarray-spatial` library, which is available in the latest earth-analytics-python environment (but will need to be installed/updated if you are working on your own machine). Note that calculated slope may not be correct if you are using a CRS with units of *degrees*; you should re-project into a projected coordinate system with units of *meters*, such as the appropriate UTM Zone.
