@@ -49,6 +49,7 @@ via the
             - <https://scholars.duke.edu/publication/1381493>
             - <https://gee-community-catalog.org/projects/polaris/>
         - Elevation from the SRTM (available from the [earthaccess API](https://github.com/nsidc/earthaccess/))
+            - this is the hardest one to work with! 
         - At least one **climate** variable from the [MACAv2 THREDDS data server](http://thredds.northwestknowledge.net:8080/thredds/reacch_climate_CMIP5_macav2_catalog2.html).
             - Pick 2 of these
             - <https://docs.geonetwork-opensource.org/3.12/user-guide/harvesting/harvesting-thredds/> 
