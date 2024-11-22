@@ -57,6 +57,7 @@ via the
             - [CMIP5 GCMs Ensemble Models](https://climate.northwestknowledge.net/MACA/GCMs.php)
             - Has different CRS, so have to project these data. May need `netCDF4` library, maybe `seaborn`.
             - Variables: air temp, precip, rel hum?
+            - [try and except error catching python](https://www.earthdatascience.org/courses/use-data-open-source-python/hierarchical-data-formats-hdf/get-maca-2-climate-data-netcdf-python/)
         - [NASA  Earth Observation Data](https://earthdata.nasa.gov/)
         - [Community Earth System Models (CESM)](https://www.cesm.ucar.edu)
      2. **Calculate at least one derived **topographic** variable** (slope or aspect) to use in your model. You probably will wish to use the `xarray-spatial` library, which is available in the latest earth-analytics-python environment (but will need to be installed/updated if you are working on your own machine). Note that calculated slope may not be correct if you are using a CRS with units of *degrees*; you should re-project into a projected coordinate system with units of *meters*, such as the appropriate UTM Zone.
