@@ -1,4 +1,4 @@
-def soil_urls(place_gdf, soil_var="sand", soil_sum="mean", soil_depth="100_200"):
+def soil_url_dict(place_gdf, soil_var="sand", soil_sum="mean", soil_depth="100_200"):
     """
     Set up soil URLs based on place.
     
@@ -11,7 +11,8 @@ def soil_urls(place_gdf, soil_var="sand", soil_sum="mean", soil_depth="100_200")
 
     Results
     -------
-        soil_url_list: list of character strings
+        soil_url: dict
+            Dictionary of URLs
     """
     from math import floor, ceil
     
@@ -26,14 +27,45 @@ def soil_urls(place_gdf, soil_var="sand", soil_sum="mean", soil_depth="100_200")
 
     bounds_min_lon, bounds_min_lat, bounds_max_lon, bounds_max_lat = (place_gdf.total_bounds)
 
-    soil_url_list = []
+    # Initialize structure for saving image links
+    url_names = []
+    for min_lon in range(floor(bounds_min_lon), ceil(bounds_max_lon)):
+        for min_lat in range(floor(bounds_min_lat), ceil(bounds_max_lat)):
+            url_names.append(f"lon{min_lon}lat{min_lat}")
+
+    soil_urls = {url_name: [] for url_name in url_names}
     for min_lon in range(floor(bounds_min_lon), ceil(bounds_max_lon)):
         for min_lat in range(floor(bounds_min_lat), ceil(bounds_max_lat)):
             print(min_lon, min_lat)
             soil_url = soil_url_template.format(min_lat = min_lat, max_lat = min_lat + 1,
                 min_lon = min_lon, max_lon = min_lon + 1)
-            soil_url_list.append(soil_url)
+            soil_urls[f"lon{min_lon}lat{min_lat}"].append(soil_url)
 
-    return soil_url_list
+    return soil_urls
 
-# soil_url_list = soil_urls(place_gdf, soil_var="sand", soil_sum="mean", soil_depth="100-200")
+# soil_urls = soil_url_dict(place_gdf, soil_var="sand", soil_sum="mean", soil_depth="100-200")
+
+def merge_soil(soil_urls):
+    """
+    Merge soil data.
+    """
+    import geopandas as gpd
+    import rioxarray as rxr
+    from rioxarray.merge import merge_arrays # Merge rasters
+    
+    #soil_das = {url_name: [] for url_name in list(soil_urls.keys())}
+    soil_das = []
+    for soil_key in list(soil_urls.keys()):
+        soil_url = soil_urls[soil_key][0]
+        print(soil_key)
+        soil_da = rxr.open_rasterio(soil_url, mask_and_scale=True).squeeze()
+
+        # Store the resulting DataArray for later
+        soil_das.append(soil_da)
+
+    print('Done.')
+
+    # Merge all tiles
+    soil_merged_das = merge_arrays(soil_das) 
+
+    return soil_merged_das
