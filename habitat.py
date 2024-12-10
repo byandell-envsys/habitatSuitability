@@ -69,3 +69,65 @@ def merge_soil(soil_urls):
     soil_merged_das = merge_arrays(soil_das) 
 
     return soil_merged_das
+
+# soil_merged_das = merge_soil(soil_urls)
+
+def process_maca(sites, scenarios=['pr'], climates=['rcp85', 'rcp45'], years = [2026]):
+    """
+    Process MACA Monthly Data.
+
+    Parameters
+    ----------
+    sites: dict of GeoDataFrames
+       dictionary with GeoDataFrames
+    scenarios: character string
+        'pr' = precipitation
+    climates: character string
+        'rcp' = relative concentration pathway
+    years: numeric
+        first year of 5-year period
+
+    Returns
+    -------
+    maca_df: DataFrame
+        data frame with parameters and values
+    """
+    import rioxarray as rxr
+    import xarray as xr
+    import pandas as pd
+    import geopandas as gpd
+    
+    def convert_lonlat(longitude):
+        return ((longitude + 180) % 360) - 180
+    
+    maca_da_list = []
+    for site_name, site_gdf in sites.items():
+        for scenario in scenarios:
+            for year in years:
+                for climate in climates:
+                    year_end = year + 4
+                    maca_url = (
+                        "http://thredds.northwestknowledge.net:8080/"
+                        "thredds/dodsC/MACAV2/BNU-ESM/"
+                        "macav2metdata_"
+                        f"{scenario}_BNU-ESM_r1i1p1_{climate}"
+                        f"_{year}_{year_end}_CONUS_monthly.nc")
+                    print(maca_url)
+                    # Read data and set up coordinates.
+                    maca_da = xr.open_dataset(maca_url).squeeze().precipitation
+                    maca_da = maca_da.assign_coords(
+                        lon = ("lon", [convert_lonlat(l) for l in maca_da.lon.values]),
+                        lat = ("lat", [convert_lonlat(l) for l in maca_da.lat.values]))
+                    maca_da = maca_da.rio.set_spatial_dims(x_dim='lon', y_dim='lat')
+                    # Clip bounds.
+                    bounds = site_gdf.to_crs(maca_da.rio.crs).total_bounds
+                    maca_da = maca_da.rio.clip_box(*bounds)
+                    maca_da_list.append(dict(
+                        site_name = site_name,
+                        scenario = scenario,
+                        year = year,
+                        climate = climate,
+                        da = maca_da))
+    return pd.DataFrame(maca_da_list)
+
+# maca_df = process_maca({'buffalo': buffalo_gdf}, ['pr'], ['rcp85', 'rcp45'], [2026])
