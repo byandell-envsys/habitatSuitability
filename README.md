@@ -15,6 +15,12 @@ Due 15 Dec. Some useful links:
 - [Habitat Suitability Coding Challenges](https://cu-esiil-edu.github.io/esiil-learning-portal/foundations/notebooks/08-habitat/habitat.html)
 - [Final Projects 2023](https://github.com/earthlab-education/Earth-Analytics-2023-01-Intro/blob/main/analysis/final.md)
 - [Subtract Rasters in Python](https://www.earthdatascience.org/courses/use-data-open-source-python/intro-raster-data-python/raster-data-processing/subtract-rasters-in-python/)
+- Working Examples in 2024
+    - [Ed Chan](https://github.com/eggvoice/sorghastrum-nutans-habitat-suitability-model)
+    - [Hannah Rieder](https://github.com/hanried/habitat-suitability)
+    - [Alison Post](https://github.com/akpost21/Habitat-Suitability) &
+[akpost21.github.io](https://github.com/akpost21/akpost21.github.io)
+    - [Christopher Quinn](https://github.com/cmq879/earth-analytics-habitat-suitability-finalproject)
 
 ## You will create a reproducible scientific workflow
 
@@ -58,7 +64,7 @@ via the
             - Has different CRS, so have to project these data. May need `netCDF4` library, maybe `seaborn`.
             - Variables: air temp, precip, rel hum?
             - [try and except error catching python](https://www.earthdatascience.org/courses/use-data-open-source-python/hierarchical-data-formats-hdf/get-maca-2-climate-data-netcdf-python/)
-        - [NASA  Earth Observation Data](https://earthdata.nasa.gov/)
+        - [NASA Earth Observation Data](https://earthdata.nasa.gov/)
         - [Community Earth System Models (CESM)](https://www.cesm.ucar.edu)
      2. **Calculate at least one derived **topographic** variable** (slope or aspect) to use in your model. You probably will wish to use the `xarray-spatial` library, which is available in the latest earth-analytics-python environment (but will need to be installed/updated if you are working on your own machine). Note that calculated slope may not be correct if you are using a CRS with units of *degrees*; you should re-project into a projected coordinate system with units of *meters*, such as the appropriate UTM Zone.
      3. **Harmonize your data** - make sure that the grids for each of your layers match up. Check out the [`ds.rio.reproject_match()` method](https://corteva.github.io/rioxarray/stable/examples/reproject_match.html#Reproject-Match) from `rioxarray`.
