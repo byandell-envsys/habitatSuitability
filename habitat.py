@@ -112,7 +112,6 @@ def process_maca(sites, scenarios=['pr'], climates=['rcp85', 'rcp45'], years = [
                         "macav2metdata_"
                         f"{scenario}_BNU-ESM_r1i1p1_{climate}"
                         f"_{year}_{year_end}_CONUS_monthly.nc")
-                    print(maca_url)
                     # Read data and set up coordinates.
                     #maca_da = rxr.open_rasterio(maca_url, mask_and_scale=True).squeeze().precipitation
                     maca_da = xr.open_dataset(maca_url).squeeze().precipitation
@@ -125,13 +124,15 @@ def process_maca(sites, scenarios=['pr'], climates=['rcp85', 'rcp45'], years = [
                     # Clip bounds.
                     bounds = site_gdf.to_crs(maca_da.rio.crs).total_bounds
                     maca_da = maca_da.rio.clip_box(*bounds)
-                    print(type(maca_da))
                     maca_da_list.append(dict(
                         site_name = site_name,
                         scenario = scenario,
                         year = year,
                         climate = climate,
                         da = maca_da))
-    return maca_da_list
+                    
+    maca_df = pd.DataFrame(maca_da_list)
+
+    return maca_df
 
 # maca_df = process_maca({'buffalo': buffalo_gdf}, ['pr'], ['rcp85', 'rcp45'], [2026])
