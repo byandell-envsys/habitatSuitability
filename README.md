@@ -17,7 +17,8 @@ Due 15 Dec. Some useful links:
 - [Subtract Rasters in Python](https://www.earthdatascience.org/courses/use-data-open-source-python/intro-raster-data-python/raster-data-processing/subtract-rasters-in-python/)
 - Working Examples in 2024
     - [Ed Chan](https://github.com/eggvoice/sorghastrum-nutans-habitat-suitability-model)
-    - [Hannah Rieder](https://github.com/hanried/habitat-suitability)
+    - [Hannah Rieder](https://github.com/hanried/habitat-suitability) &
+[doc 00](https://github.com/hanried/habitat-suitability/blob/main/00-habitat-suitability.ipynb)
     - [Alison Post](https://github.com/akpost21/Habitat-Suitability) &
 [akpost21.github.io](https://github.com/akpost21/akpost21.github.io)
     - [Christopher Quinn](https://github.com/cmq879/earth-analytics-habitat-suitability-finalproject)
@@ -26,6 +27,7 @@ Due 15 Dec. Some useful links:
     - [POLARIS Soil Multiple Tiles](https://cuboulder.zoom.us/rec/play/V_jdL5O3ePUCkAlt__yYG2tOIM8cI8BBI61z4114Awf3lVPBD_XaO_kUSOCCCBlqeq4XCsdkWuvivYCl.JpFRlK-EbErBsiay?canPlayFromShare=true&from=share_recording_detail&continueMode=true&componentName=rec-play&originRequestUrl=https%3A%2F%2Fcuboulder.zoom.us%2Frec%2Fshare%2F3S7pGOSv7jztZTvg4RSXLj-GicnHwusIDIEDoETZbUN7ivkc6Ryi5GAJyX9Ly6h2.VXl6iFmLChjjUyOg)
     - [MACA THREDDS Climate Projections](https://o365coloradoedu-my.sharepoint.com/personal/alpo6007_colorado_edu/_layouts/15/stream.aspx?id=%2Fpersonal%2Falpo6007%5Fcolorado%5Fedu%2FDocuments%2FAttachments%2FGMT20241204%2D184128%5FRecording%5F1758x1024%201%2Emp4&referrer=StreamWebApp%2EWeb&referrerScenario=AddressBarCopied%2Eview%2E9d3173e0%2D79c8%2D4027%2D95d3%2D7b49bec923d0)
     - [Shuttle Radar Topology Mission (SRTM)](https://cuboulder.zoom.us/rec/play/6fTikKcJPbGPB321iHmAa3dhMUR7r0n_zSZ3XxjL-SfBLpVfsrZJ1CrHlkOrK6jvTlYgztvvskfvaAGP.T6ixGvWj42gYShMV?canPlayFromShare=true&from=share_recording_detail&continueMode=true&componentName=rec-play&originRequestUrl=https%3A%2F%2Fcuboulder.zoom.us%2Frec%2Fshare%2FploG3HVb_qA0QU8eACIHMKtNbkiGFys7cmiBbTRryv3NUWBmKo-DXhzXdU3cbpz7.99x0PeiCHONSj6Ty)
+    - [Harmonizing](https://cuboulder.zoom.us/rec/play/ekGBLwpW4gdtvlBstJrS_ehlAzq9INvK37XNdS8WKF-3WfE2xTiZmn1xIlFysuymN67yGbUeUJlpAwzS.HPT5luF6NWi8Ylsl?canPlayFromShare=true&from=share_recording_detail&continueMode=true&componentName=rec-play&originRequestUrl=https%3A%2F%2Fcuboulder.zoom.us%2Frec%2Fshare%2FgtkCgeowtvOgVPHDddcElI144wxCyHXOj1lKi5SEiMlxY1-L9Zm-PDBuTe6lh3Gm.S4X4wzflnTKXQtqr)
     - [Zenodo DOI](https://www.canva.com/design/DAGZAYa4S9g/EMFly0i8e9YDDFL4QuEMaQ/watch?utm_content=DAGZAYa4S9g&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h7cebe8067b)
 ## You will create a reproducible scientific workflow
 
