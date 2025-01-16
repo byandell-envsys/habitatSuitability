@@ -166,5 +166,6 @@ data/
 # Quarto
 
 /.quarto/
+*.quarto_*
 /env/
 *_files/
