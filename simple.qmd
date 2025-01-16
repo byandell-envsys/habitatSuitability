@@ -3,7 +3,6 @@ title: "Simple"
 format:
   html:
     code-fold: true
-jupyter: python
 ---
 
 ```{python}
