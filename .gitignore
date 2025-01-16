@@ -167,4 +167,4 @@ data/
 
 /.quarto/
 /env/
-*-files/
+*_files/
