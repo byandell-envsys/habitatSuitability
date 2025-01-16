@@ -1,0 +1,14 @@
+---
+title: "Simple"
+format:
+  html:
+    code-fold: true
+jupyter: python
+---
+
+```{python}
+import sys
+print(sys.executable)
+print(sys.version)
+```
+
