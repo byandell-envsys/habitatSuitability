@@ -11,7 +11,50 @@ print(sys.executable)
 print(sys.version)
 ```
 
+## Discussion
 
+At the moment, I am trying to pull together my Habitat Suitability project, and I would like to do that with Quarto in VSCode, rather than Jupyter. [I understand, I think, that Quarto interfaces with Jupyter, but still learning.]
+ 
+The challenge I have at the moment is that I seem to have Python 3.12.4 and Python 3.9.6
+
+- Base(Python 3.12.4) ~miniconda3/bin/python
+- Python 3.9.6 /Library/Developer/CommandLineTools/usr/bin/python3
+ 
+I read 
+[references](#references)
+but I don’t understand them. I know how to use the 
+**Python: Select Interpreter**
+by hand, and that works for code chunks but not for the qmd document (that is, I don’t know how to select interpreter for qmd files). The hint I get is that `conda` and `quarto` may not always play well together, but I cannot understand what to do next. Should I `uninstall Python 3.9.6`? Or ???
+ 
+### Command Outputs
+
+From the shell (bash or zsh), I get
+ 
+> (base) brianyandell@Brians-MacBook-Pro habitatSuitability % python --version
+> Python 3.12.4
+
+If I run a code chunk from within a qmd, I get this as well. Consider this current document,
+[simple.qmd](https://github.com/byandell-envsys/habitatSuitability/blob/main/simple.qmd) 
+The code chunk yields.
+ 
+> /Users/brianyandell/miniconda3/bin/python
+> 3.12.4 | packaged by Anaconda, Inc. | (main, Jun 18 2024, 10:07:17) [Clang 14.0.6 ]`
+ 
+However, rendering the document (using the little icon within VSCode or from the command line with `quarto preview simple.qmd` yields
+ 
+> /Library/Developer/CommandLineTools/usr/bin/python3
+> 3.9.6 (default, Feb  3 2024, 15:58:27)
+[Clang 15.0.0 (clang-1500.3.9.4)]
+ 
+I know there is a way in the YAML to set the version, say with `jupyter: python3`.
+I tried putting `python` instead of `python3` and it choked as it cannot find another kernel
+ 
+> (base) brianyandell@Brians-MacBook-Pro habitatSuitability % quarto preview /Users/brianyandell/Documents/Git
+Hub/habitatSuitability/simple.qmd --no-browser --no-watch-inputs\
+> ERROR: Jupyter kernel 'python' not found. Known kernels: python3. Run 'quarto check jupyter' with your python environment activated to check python version used.
+ 
+So it clearly does not know about the other versions.
+ 
 ## References
 
 I found the following references.
@@ -21,5 +64,5 @@ No success, as I don't really know what I am doing.
 
 - [Quarto: Virtual Environments](https://quarto.org/docs/projects/virtual-environments.html)
 - [Manage Jupyter Kernels in VS Code](https://code.visualstudio.com/docs/datascience/jupyter-kernel-management)
-- [Quarto: Using Python: Kernel Selection(https://quarto.org/docs/computations/python.html#kernel-selection)
+- [Quarto: Using Python: Kernel Selection](https://quarto.org/docs/computations/python.html#kernel-selection)
   - [nb_conda_kernels](https://github.com/anaconda/nb_conda_kernels#use-with-nbconvert-voila-papermill)
