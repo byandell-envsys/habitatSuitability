@@ -11,3 +11,13 @@ print(sys.executable)
 print(sys.version)
 ```
 
+## References
+
+I found the following references.
+Note in particular the `nb_conda_kernels`.
+This sounds pretty arcane, but ...
+
+- [Quarto: Virtual Environments](https://quarto.org/docs/projects/virtual-environments.html)
+- [Manage Jupyter Kernels in VS Code](https://code.visualstudio.com/docs/datascience/jupyter-kernel-management)
+- [Quarto: Using Python: Kernel Selection(https://quarto.org/docs/computations/python.html#kernel-selection)
+  - [nb_conda_kernels](https://github.com/anaconda/nb_conda_kernels#use-with-nbconvert-voila-papermill)
