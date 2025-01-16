@@ -11,11 +11,13 @@ print(sys.executable)
 print(sys.version)
 ```
 
+
 ## References
 
 I found the following references.
 Note in particular the `nb_conda_kernels`.
-This sounds pretty arcane, but ...
+This sounds pretty arcane, but I tried it.
+No success, as I don't really know what I am doing.
 
 - [Quarto: Virtual Environments](https://quarto.org/docs/projects/virtual-environments.html)
 - [Manage Jupyter Kernels in VS Code](https://code.visualstudio.com/docs/datascience/jupyter-kernel-management)
