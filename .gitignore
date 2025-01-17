@@ -163,9 +163,14 @@ cython_debug/
 
 data/
 
-# Quarto
+# Quarto Intermediaries
 
 /.quarto/
 *.quarto_*
 /env/
 *_files/
+
+# Output Documents
+
+*.html
+*.pdf
