@@ -1,25 +1,33 @@
 ---
-title: "hist"
+title: "Buffalo Grasslands"
 format:
   html:
     code-fold: true
 ---
 
-Currently using python 3.12.4, but want to use python 3.11.10 in virtual environment 
-This file will not render properly as it is stuck on rendering with the default python (3.9.6). See [simple.qmd](https://github.com/byandell-envsys/habitatSuitability/blob/main/simple.qmd) for a way to examine environments.
-
-/Users/brianyandell/.virtualenvs/r-reticulate/bin/python
-/users/brianyandell/miniconda3/bin/python
-
-```{python}
-import sys
-print(sys.executable)
-print(sys.version)
-```
+Currently using python 3.11.10 with the
+[`earth-analytics-python` environment](https://github.com/earthlab/earth-analytics-python-env).
+Using
+[StoreMagic](https://ipython.readthedocs.io/en/stable/config/extensions/storemagic.html)
+to store and retrieve intermediate calculations.
+Code chunks are specific to this project (using name `buffalo`)
+but use generic functions from the
+[landmapy](https://github.com/byandell-envsys/landmapy)
+module.
 
 # Buffalo Grasslands Habitat Suitability
 
-This project examines habitat suitability for [Blue Stem](https://greg.app/big-bluestem-soil/) in the [Buffalo Gap](https://www.fs.usda.gov/recarea/nebraska/recarea/?recid=30329) and [Oglala](https://www.fs.usda.gov/recarea/nebraska/recarea/?recid=30328) National Grasslands. These grasslands contiguous, located in [Oceti Sakowin Oyate](https://americanindian.si.edu/nk360/plains-belonging-nation/oceti-sakowin), also known as the Lakota Nation or Great Sioux Nation, and in the US states of South Dakota and Nebraska.
+This project examines habitat suitability for
+[Blue Stem](https://greg.app/big-bluestem-soil/)
+in the
+[Buffalo Gap](https://www.fs.usda.gov/recarea/nebraska/recarea/?recid=30329)
+and
+[Oglala](https://www.fs.usda.gov/recarea/nebraska/recarea/?recid=30328)
+National Grasslands.
+These contiguous grasslands are located in
+[Oceti Sakowin Oyate](https://americanindian.si.edu/nk360/plains-belonging-nation/oceti-sakowin), also known as the Lakota Nation or Great Sioux Nation, and in the US states of South Dakota and Nebraska.
+For more information see
+[Oceti Sakowin Essential Understandings & Standards](https://sdtribalrelations.sd.gov/docs/OSEUs-18.pdf).
 
 Blue Stem, according to [Greg](https://greg.app/), "need well-drained, nutrient-rich soils. The best soil types for this grass are sandy loam or loamy soil, which provide the right balance of drainage and nutrients. Aim for an organic matter content of 5-10%. This range is crucial for optimal growth, as it enhances soil fertility and structure. The ideal pH range for Big Bluestem is between 6.0 and 7.0. This slightly acidic to neutral pH is essential for nutrient availability, ensuring your plants can absorb what they need to thrive."
 
@@ -27,17 +35,19 @@ Blue Stem, according to [Greg](https://greg.app/), "need well-drained, nutrient-
 
 ![](https://www.gardeners.com/globalassets/articles/gardening/2014content/9120-soil-texture-triangle-sample.png?$staticlink$){fig-align="center"}
 
-I don't seem to have information on slope or aspect, but I have seen blue stem on flat areas and slopes.
+I could not find information on slope or aspect
+but I have seen blue stem on flat areas and slopes.
 
 ### Project Specs
 
-The project should compare
+The project compares
 
 -   two grassland habitats: Buffalo Gap and Oglala National Grasslands
 -   one species: Blue Stem
 -   one soil measurement: percent sand, and maybe pH
 -   two climate scenarios: (e.g. different time periods, different emission scenarios)
-    -   [Relative concentration pathways (RCPs)](https://coastadapt.com.au/infographics/what-are-rcps) 4.5 (current) and 8.5 (worse case)
+    -   [Relative concentration pathways (RCPs)](https://coastadapt.com.au/infographics/what-are-rcps)
+    - `rcp45` (4.5 = current) and `rcp85` (8.5 = worse case)
 -   one elevation: slope
 -   fuzzy model based on above description
 
@@ -84,9 +94,42 @@ Workflow details were developed in separate jupyter notebooks. Working documents
 
 ## Create Buffalo GeoDataFrame
 
-Proposed sites are two contiguous national grasslands located in Oceti Sakowin Oyate, also known as Great Lakota Nation and the US states of South Dakota and Nebraska. They are [Buffalo Gap National Grassland](https://www.fs.usda.gov/recarea/nebraska/recarea/?recid=30329) and [Oglala National Grassland](https://www.fs.usda.gov/recarea/nebraska/recarea/?recid=30328)
+First visit
+[USFS Geospatial Data Discovery: National Grassland Units (Feature Layer)](https://data-usfs.hub.arcgis.com/datasets/usfs::national-grassland-units-feature-layer/explore)
+and manually download GeoJSON file from DataSet into directory
+`~/earth-analytics/data/habitat` (see `create_data_dir()` below).
+A GeoDataFrame `buffalo_gdf` is created and stored for later retrieval to save time.
+The `plot_redline()` function is from
+[landmapy.redline](https://github.com/byandell-envsys/landmapy/blob/main/landmapy/redline.py)
+module to visualize.
 
-A GeoDataFrame `buffalo_gdf` is created and stored for later retrieval. See [0_study_area](https://github.com/byandell-envsys/habitatSuitability/blob/main/0_study_area.ipynb). We use the `plot_redline()` function from [landmapy.redline](https://github.com/byandell-envsys/landmapy/blob/main/landmapy/redline.py) module to visualize.
+```{python}
+import geopandas as gpd # read geojson file into gdf
+from landmapy.habitat import create_data_dir # create (or retrieve) data directory
+from landmapy.redline import plot_redline # plot gdf
+```
+
+```{python}
+%store -r buffalo_gdf
+try:
+    buffalo_gdf
+except NameError:
+    data_dir = create_data_dir('habitat')
+    # Read all grasslands GeoJSON into `grassland_gdf`.
+    grassland_url = f"{data_dir}/National_Grassland_Units_(Feature_Layer).geojson"
+    grassland_gdf = gpd.read_file(grassland_url)
+    # Subset to desired locations.
+    buffalo_gdf = grassland_gdf.loc[grassland_gdf['GRASSLANDNAME'].isin(
+        ["Buffalo Gap National Grassland", "Oglala National Grassland"])]
+    %store buffalo_gdf
+    print("buffalo_gdf created and stored")
+else:
+    print("buffalo_gdf retrieved from StoreMagic")
+```
+
+```{python}
+plot_redline(buffalo_gdf)
+```
 
 ### Grassland References
 
@@ -99,39 +142,6 @@ A GeoDataFrame `buffalo_gdf` is created and stored for later retrieval. See [0_s
     -   [Visit](https://visitnebraska.com/harrison/oglala-national-grassland)
     -   [Data Download](https://data-usfs.hub.arcgis.com/datasets/usfs::national-grassland-units-feature-layer/explore?location=43.509639%2C-102.570535%2C8.36)
     -   (OBJECTID 186940, NATIONALGRASSLANDID 295521010328)
-
-### Python Code
-
-```{python}
-import os # Interoperable file paths
-import pathlib # Find the home folder
-import geopandas as gpd # read geojson file into gdf
-from landmapy.redline import plot_redline # plot gdf
-```
-
-```{python}
-# Define and create the project data directory
-data_dir = os.path.join(
-    pathlib.Path.home(),
-    'earth-analytics',
-    'data',
-    'habitat'
-)
-os.makedirs(data_dir, exist_ok=True)
-data_dir
-```
-
-```{python}
-grassland_url = data_dir + "/National_Grassland_Units_(Feature_Layer).geojson"
-print(grassland_url)
-grassland_gdf = gpd.read_file(grassland_url)
-```
-
-```{python}
-buffalo_gdf = grassland_gdf.loc[grassland_gdf['GRASSLANDNAME'].isin(
-    ["Buffalo Gap National Grassland", "Oglala National Grassland"])]
-plot_redline(buffalo_gdf)
-```
 
 ## Soil and Climate Measures
 
@@ -153,15 +163,22 @@ Get and show `mean` of `sand` at depth `100-200m` with functions
 -   `gdf_over_da(buffalo_gdf, buffalo_da)`
 
 ```{python}
-from landmapy.habitat import merge_soil
-from landmapy.index import gdf_over_da
+from landmapy.habitat import merge_soil # merge soil data from GDF
+from landmapy.index import gdf_over_da # plot GDF over DA
 ```
 
 Merge soil tiles to create `buffalo_da`.
 
 ```{python}
 print(buffalo_gdf.total_bounds)
-buffalo_da = merge_soil(buffalo_gdf)
+%store -r buffalo_da
+try:
+    buffalo_da
+except NameError:
+    buffalo_da = merge_soil(buffalo_gdf)
+    print("buffalo_da merged soil from buffalo_gdf and stored")
+else:
+    print("buffalo_da soil merge retrieved")
 ```
 
 ```{python}
@@ -189,6 +206,9 @@ gdf_over_da(buffalo_gdf, maca_2027_year_da)
 ```
 
 Repeat for `rcp45`. Make nice plot pair.
+Will need to modify `gdf_over_da()` to return object
+rather than create plot.
+This probably has some subtleties.
 
 ## Slope Elevation variable `slope`
 
