@@ -5,7 +5,11 @@ format:
     code-fold: true
 ---
 
+Currently using python 3.12.4, but want to use python 3.11.10 in virtual environment 
 This file will not render properly as it is stuck on rendering with the default python (3.9.6). See [simple.qmd](https://github.com/byandell-envsys/habitatSuitability/blob/main/simple.qmd) for a way to examine environments.
+
+/Users/brianyandell/.virtualenvs/r-reticulate/bin/python
+/users/brianyandell/miniconda3/bin/python
 
 ```{python}
 import sys
@@ -149,7 +153,7 @@ Get and show `mean` of `sand` at depth `100-200m` with functions
 -   `gdf_over_da(buffalo_gdf, buffalo_da)`
 
 ```{python}
-from landmapy.habitat import create_data_dir, merge_soil, maca_year, process_maca
+from landmapy.habitat import merge_soil
 from landmapy.index import gdf_over_da
 ```
 
@@ -157,15 +161,7 @@ Merge soil tiles to create `buffalo_da`.
 
 ```{python}
 print(buffalo_gdf.total_bounds)
-%store -r buffalo_da
-try:
-    buffalo_da
-except NameError:
-    buffalo_da = merge_soil(buffalo_gdf)
-    %store buffalo_da
-    print("buffalo_da created and stored")
-else:
-    print("buffalo_da already exists")
+buffalo_da = merge_soil(buffalo_gdf)
 ```
 
 ```{python}
@@ -202,7 +198,7 @@ Repeat for `rcp45`. Make nice plot pair.
 
 ```{python}
 import earthaccess
-from landmapy.habitat import srtm_download, srtm_slope
+from landmapy.habitat import create_data_dir, srtm_download, srtm_slope
 from landmapy.index import gdf_over_da 
 ```
 

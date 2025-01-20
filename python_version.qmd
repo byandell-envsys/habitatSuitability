@@ -11,11 +11,49 @@ format:
 - [References](#references)
 - [Code Chunks](#code-chunks)
 
+Use `quarto render python_version.qmd -t markdown`
+to render as markdown.
+
+## Python Versions
+
+Looking at list of environments:
+
+| name | version | location | label |
+|------|---------|----------|-------|
+| Python | 3.9.6 | /usr/bin/python3 |
+| Python | 3.9.6 | /Library/Developer/CommandLineTools/usr/bin/python3 | recommended
+| base Python | 3.12.4 | ~/miniconda3/bin/python | conda env
+| earth-analytics-python | 3.11.10 | ~/miniconda3/envs/earth-analytics-python/bin/python
+| Python | 3.12.7 | /opt/homebrew/bin/python3.12 | global env
+| Python | 3.13.0 | /opt/homebrew/bin/python3
+| r-reticulate Python | 3.12/4 | ~/.virtualenvs/r-reticulate/bin/python
+| old-eda-python | Python 3.11.10 | ~/miniconda3/envs/old-eda-python/bin/python | virtual env
+
+Jupyter finds Python environments through a few mechanisms:
+
+1. Kernel Specs:
+    - When you install a Python environment, and want to use it with Jupyter, you typically install the ipykernel package within that environment.
+    - This package creates a "kernel spec" file, which contains information about the environment (like its name, location, and Python interpreter path).
+    - Jupyter scans known locations for these kernel specs, allowing you to select the desired environment when creating a new notebook.
+2. Default Environment:
+    - If no kernel is explicitly selected, Jupyter uses the default Python environment associated with the Jupyter installation.
+    - This can often be the base Python environment where Jupyter is installed.
+3. JupyterLab Desktop:
+    - In JupyterLab Desktop, you can directly select the Python environment from a dropdown menu.
+    - This menu lists all detected environments, including virtual environments and conda environments.
+4. Conda Environments:
+    - If you're using conda, Jupyter automatically detects conda environments.
+    - You can use the conda install ipykernel command within your environment to make it available in Jupyter.
+
+The shell command `jupyter kernelspec list`
+is supposed to list all available kernels, but only shows\
+`python3` `/Users/brianyandell/.local/share/jupyter/kernels/python3`
+
 ## Issues
  
 The challenge I had when using Quarto was that I seem to have two versions of Python:
 
-- Base(Python 3.12.4) ~miniconda3/bin/python
+- Base(Python 3.12.4) ~/miniconda3/bin/python
 - Python 3.9.6 /Library/Developer/CommandLineTools/usr/bin/python3
  
 I read 
@@ -102,6 +140,10 @@ I tried it briefly, with no success.
 
 - [Quarto: Virtual Environments](https://quarto.org/docs/projects/virtual-environments.html)
 - [Manage Jupyter Kernels in VS Code](https://code.visualstudio.com/docs/datascience/jupyter-kernel-management)
+- [Installing the IPython kernel (IPython)](https://ipython.readthedocs.io/en/stable/install/kernel_install.html#kernels-for-different-environments)
+- [Quarto: Project Basics](https://quarto.org/docs/projects/quarto-projects.html)
+- [Quarto: Environment Variables](https://quarto.org/docs/projects/environment.html)
+- [How to Know Which Python is Running in Your Jupyter Notebook (SaturnCloud)](https://saturncloud.io/blog/how-to-know-which-python-is-running-in-your-jupyter-notebook/)
 - [Quarto: Using Python: Kernel Selection](https://quarto.org/docs/computations/python.html#kernel-selection)
   - [nb_conda_kernels](https://github.com/anaconda/nb_conda_kernels#use-with-nbconvert-voila-papermill)
 
@@ -114,7 +156,8 @@ print(sys.version)
 ```
 
 ```{bash}
-ls -l ~/.virtualenvs/r-reticulate/bin
+cd ~/.virtualenvs/r-reticulate/bin
+ls -l python*
 ```
 
 ```{r}
