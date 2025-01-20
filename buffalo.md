@@ -1,29 +1,16 @@
 ---
-title: hist
+title: Buffalo Grasslands
 toc-title: Table of contents
 ---
 
-Currently using python 3.12.4, but want to use python 3.11.10 in virtual
-environment This file will not render properly as it is stuck on
-rendering with the default python (3.9.6). See
-[simple.qmd](https://github.com/byandell-envsys/habitatSuitability/blob/main/simple.qmd)
-for a way to examine environments.
-
-/Users/brianyandell/.virtualenvs/r-reticulate/bin/python
-/users/brianyandell/miniconda3/bin/python
-
-:::: {.cell execution_count="1"}
-``` {.python .cell-code}
-import sys
-print(sys.executable)
-print(sys.version)
-```
-
-::: {.cell-output .cell-output-stdout}
-    /users/brianyandell/miniconda3/envs/earth-analytics-python/bin/python
-    3.11.10 | packaged by conda-forge | (main, Oct 16 2024, 01:26:25) [Clang 17.0.6 ]
-:::
-::::
+Currently using python 3.11.10 with the [`earth-analytics-python`
+environment](https://github.com/earthlab/earth-analytics-python-env).
+Using
+[StoreMagic](https://ipython.readthedocs.io/en/stable/config/extensions/storemagic.html)
+to store and retrieve intermediate calculations. Code chunks are
+specific to this project (using name `buffalo`) but use generic
+functions from the
+[landmapy](https://github.com/byandell-envsys/landmapy) module.
 
 # Buffalo Grasslands Habitat Suitability
 
@@ -31,11 +18,13 @@ This project examines habitat suitability for [Blue
 Stem](https://greg.app/big-bluestem-soil/) in the [Buffalo
 Gap](https://www.fs.usda.gov/recarea/nebraska/recarea/?recid=30329) and
 [Oglala](https://www.fs.usda.gov/recarea/nebraska/recarea/?recid=30328)
-National Grasslands. These grasslands contiguous, located in [Oceti
+National Grasslands. These contiguous grasslands are located in [Oceti
 Sakowin
 Oyate](https://americanindian.si.edu/nk360/plains-belonging-nation/oceti-sakowin),
 also known as the Lakota Nation or Great Sioux Nation, and in the US
-states of South Dakota and Nebraska.
+states of South Dakota and Nebraska. For more information see [Oceti
+Sakowin Essential Understandings &
+Standards](https://sdtribalrelations.sd.gov/docs/OSEUs-18.pdf).
 
 Blue Stem, according to [Greg](https://greg.app/), "need well-drained,
 nutrient-rich soils. The best soil types for this grass are sandy loam
@@ -53,12 +42,12 @@ which puts sandy loam and loamy sand at 50-85% sand.
 
 ![](https://www.gardeners.com/globalassets/articles/gardening/2014content/9120-soil-texture-triangle-sample.png?$staticlink$){fig-align="center"}
 
-I don't seem to have information on slope or aspect, but I have seen
-blue stem on flat areas and slopes.
+I could not find information on slope or aspect but I have seen blue
+stem on flat areas and slopes.
 
 ### Project Specs
 
-The project should compare
+The project compares
 
 -   two grassland habitats: Buffalo Gap and Oglala National Grasslands
 -   one species: Blue Stem
@@ -67,7 +56,7 @@ The project should compare
     emission scenarios)
     -   [Relative concentration pathways
         (RCPs)](https://coastadapt.com.au/infographics/what-are-rcps)
-        4.5 (current) and 8.5 (worse case)
+    -   `rcp45` (4.5 = current) and `rcp85` (8.5 = worse case)
 -   one elevation: slope
 -   fuzzy model based on above description
 
@@ -126,19 +115,57 @@ documents that contribute to this workflow are as follows.
 
 ## Create Buffalo GeoDataFrame
 
-Proposed sites are two contiguous national grasslands located in Oceti
-Sakowin Oyate, also known as Great Lakota Nation and the US states of
-South Dakota and Nebraska. They are [Buffalo Gap National
-Grassland](https://www.fs.usda.gov/recarea/nebraska/recarea/?recid=30329)
-and [Oglala National
-Grassland](https://www.fs.usda.gov/recarea/nebraska/recarea/?recid=30328)
-
-A GeoDataFrame `buffalo_gdf` is created and stored for later retrieval.
-See
-[0_study_area](https://github.com/byandell-envsys/habitatSuitability/blob/main/0_study_area.ipynb).
-We use the `plot_redline()` function from
+First visit [USFS Geospatial Data Discovery: National Grassland Units
+(Feature
+Layer)](https://data-usfs.hub.arcgis.com/datasets/usfs::national-grassland-units-feature-layer/explore)
+and manually download GeoJSON file from DataSet into directory
+`~/earth-analytics/data/habitat` (see `create_data_dir()` below). A
+GeoDataFrame `buffalo_gdf` is created and stored for later retrieval to
+save time. The `plot_redline()` function is from
 [landmapy.redline](https://github.com/byandell-envsys/landmapy/blob/main/landmapy/redline.py)
 module to visualize.
+
+::: {.cell execution_count="1"}
+``` {.python .cell-code}
+import geopandas as gpd # read geojson file into gdf
+from landmapy.habitat import create_data_dir # create (or retrieve) data directory
+from landmapy.redline import plot_redline # plot gdf
+```
+:::
+
+:::: {.cell execution_count="2"}
+``` {.python .cell-code}
+%store -r buffalo_gdf
+try:
+    buffalo_gdf
+except NameError:
+    data_dir = create_data_dir('habitat')
+    # Read all grasslands GeoJSON into `grassland_gdf`.
+    grassland_url = f"{data_dir}/National_Grassland_Units_(Feature_Layer).geojson"
+    grassland_gdf = gpd.read_file(grassland_url)
+    # Subset to desired locations.
+    buffalo_gdf = grassland_gdf.loc[grassland_gdf['GRASSLANDNAME'].isin(
+        ["Buffalo Gap National Grassland", "Oglala National Grassland"])]
+    %store buffalo_gdf
+    print("buffalo_gdf created and stored")
+else:
+    print("buffalo_gdf retrieved from StoreMagic")
+```
+
+::: {.cell-output .cell-output-stdout}
+    buffalo_gdf retrieved from StoreMagic
+:::
+::::
+
+:::: {.cell execution_count="3"}
+``` {.python .cell-code}
+plot_redline(buffalo_gdf)
+```
+
+::: {.cell-output .cell-output-display}
+![](buffalo_files/figure-markdown/cell-4-output-1.png)
+:::
+::::
 
 ### Grassland References
 
@@ -157,59 +184,6 @@ module to visualize.
     -   [Data
         Download](https://data-usfs.hub.arcgis.com/datasets/usfs::national-grassland-units-feature-layer/explore?location=43.509639%2C-102.570535%2C8.36)
     -   (OBJECTID 186940, NATIONALGRASSLANDID 295521010328)
-
-### Python Code
-
-::: {.cell execution_count="2"}
-``` {.python .cell-code}
-import os # Interoperable file paths
-import pathlib # Find the home folder
-import geopandas as gpd # read geojson file into gdf
-from landmapy.redline import plot_redline # plot gdf
-```
-:::
-
-:::: {.cell execution_count="3"}
-``` {.python .cell-code}
-# Define and create the project data directory
-data_dir = os.path.join(
-    pathlib.Path.home(),
-    'earth-analytics',
-    'data',
-    'habitat'
-)
-os.makedirs(data_dir, exist_ok=True)
-data_dir
-```
-
-::: {.cell-output .cell-output-display execution_count="21"}
-    '/Users/brianyandell/earth-analytics/data/habitat'
-:::
-::::
-
-:::: {.cell execution_count="4"}
-``` {.python .cell-code}
-grassland_url = data_dir + "/National_Grassland_Units_(Feature_Layer).geojson"
-print(grassland_url)
-grassland_gdf = gpd.read_file(grassland_url)
-```
-
-::: {.cell-output .cell-output-stdout}
-    /Users/brianyandell/earth-analytics/data/habitat/National_Grassland_Units_(Feature_Layer).geojson
-:::
-::::
-
-:::: {.cell execution_count="5"}
-``` {.python .cell-code}
-buffalo_gdf = grassland_gdf.loc[grassland_gdf['GRASSLANDNAME'].isin(
-    ["Buffalo Gap National Grassland", "Oglala National Grassland"])]
-plot_redline(buffalo_gdf)
-```
-
-::: {.cell-output .cell-output-display}
-![](buffalo_files/figure-markdown/cell-6-output-1.png)
-:::
-::::
 
 ## Soil and Climate Measures
 
@@ -249,82 +223,64 @@ Get and show `mean` of `sand` at depth `100-200m` with functions
 -   `buffalo_da = merge_soil(buffalo_gdf, "sand", "mean", "100_200")`
 -   `gdf_over_da(buffalo_gdf, buffalo_da)`
 
-::: {.cell execution_count="6"}
+::: {.cell execution_count="4"}
 ``` {.python .cell-code}
-from landmapy.habitat import merge_soil
-from landmapy.index import gdf_over_da
+from landmapy.habitat import merge_soil # merge soil data from GDF
+from landmapy.index import gdf_over_da # plot GDF over DA
 ```
 :::
 
 Merge soil tiles to create `buffalo_da`.
 
-:::: {.cell execution_count="7"}
+:::: {.cell execution_count="5"}
 ``` {.python .cell-code}
 print(buffalo_gdf.total_bounds)
-buffalo_da = merge_soil(buffalo_gdf)
+%store -r buffalo_da
+try:
+    buffalo_da
+except NameError:
+    buffalo_da = merge_soil(buffalo_gdf)
+    print("buffalo_da merged soil from buffalo_gdf and stored")
+else:
+    print("buffalo_da soil merge retrieved")
 ```
 
 ::: {.cell-output .cell-output-stdout}
     [-104.05473027   42.74093601 -101.47233564   43.99459902]
-    -105 42
-    -105 43
-    -104 42
-    -104 43
-    -103 42
-    -103 43
-    -102 42
-    -102 43
-    lon-105lat42
-    lon-105lat43
-    lon-104lat42
-    lon-104lat43
-    lon-103lat42
-    lon-103lat43
-    lon-102lat42
-    lon-102lat43
-    Done.
+    buffalo_da soil merge retrieved
 :::
 ::::
 
-::::: {.cell execution_count="8"}
+:::: {.cell execution_count="6"}
 ``` {.python .cell-code}
 buffalo_gdf['color'] = ['white','red']
 gdf_over_da(buffalo_gdf, buffalo_da, cmap='viridis')
 ```
 
-::: {.cell-output .cell-output-stderr}
-    /users/brianyandell/miniconda3/envs/earth-analytics-python/lib/python3.11/site-packages/geopandas/geodataframe.py:1819: SettingWithCopyWarning: 
-    A value is trying to be set on a copy of a slice from a DataFrame.
-    Try using .loc[row_indexer,col_indexer] = value instead
-
-    See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-      super().__setitem__(key, value)
-:::
-
 ::: {.cell-output .cell-output-display}
-![](buffalo_files/figure-markdown/cell-9-output-2.png)
+![](buffalo_files/figure-markdown/cell-7-output-1.png)
 :::
-:::::
+::::
 
 ### Climate Precipitation Measure
 
 Project precipation `pr` under representative concentration pathway
 scenarios `rcp45` and `rcp85` for years `2026-2030`.
 
-::: {.cell execution_count="9"}
+::: {.cell execution_count="7"}
 ``` {.python .cell-code}
 from landmapy.habitat import process_maca, maca_year
 from landmapy.index import gdf_over_da
 ```
 :::
 
-:::: {.cell execution_count="10"}
+:::: {.cell execution_count="8"}
 ``` {.python .cell-code}
 maca_df = process_maca({'buffalo': buffalo_gdf})
 maca_df[['site_name', 'scenario', 'climate', 'year']]
 ```
 
-::: {.cell-output .cell-output-display execution_count="28"}
+::: {.cell-output .cell-output-display execution_count="24"}
 <div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -349,18 +305,20 @@ maca_df[['site_name', 'scenario', 'climate', 'year']]
 :::
 ::::
 
-:::: {.cell execution_count="11"}
+:::: {.cell execution_count="9"}
 ``` {.python .cell-code}
 maca_2027_year_da = maca_year(maca_df, 0, 2027) # 0 = `rcp85`, 1 = `rcp45`
 gdf_over_da(buffalo_gdf, maca_2027_year_da)
 ```
 
 ::: {.cell-output .cell-output-display}
-![](buffalo_files/figure-markdown/cell-12-output-1.png)
+![](buffalo_files/figure-markdown/cell-10-output-1.png)
 :::
 ::::
 
-Repeat for `rcp45`. Make nice plot pair.
+Repeat for `rcp45`. Make nice plot pair. Will need to modify
+`gdf_over_da()` to return object rather than create plot. This probably
+has some subtleties.
 
 ## Slope Elevation variable `slope`
 
@@ -368,7 +326,7 @@ Repeat for `rcp45`. Make nice plot pair.
 -   `slope_da = srtm_slope(srtm_da)`
 -   `gdf_over_da(buffalo_gdf, slope_da)`
 
-::: {.cell execution_count="12"}
+::: {.cell execution_count="10"}
 ``` {.python .cell-code}
 import earthaccess
 from landmapy.habitat import create_data_dir, srtm_download, srtm_slope
@@ -376,19 +334,19 @@ from landmapy.index import gdf_over_da
 ```
 :::
 
-:::: {.cell execution_count="13"}
+:::: {.cell execution_count="11"}
 ``` {.python .cell-code}
 project_dir = create_data_dir('habitat')
 elevation_dir = create_data_dir('habitat/srtm')
 elevation_dir
 ```
 
-::: {.cell-output .cell-output-display execution_count="31"}
+::: {.cell-output .cell-output-display execution_count="27"}
     '/Users/brianyandell/earth-analytics/data/habitat/srtm'
 :::
 ::::
 
-:::: {.cell execution_count="14"}
+:::: {.cell execution_count="12"}
 ``` {.python .cell-code}
 earthaccess.login()
 datasets = earthaccess.search_datasets(keyword='SRTM DEM', count=11)
@@ -412,32 +370,32 @@ for dataset in datasets:
 :::
 ::::
 
-:::: {.cell execution_count="15"}
+:::: {.cell execution_count="13"}
 ``` {.python .cell-code}
 srtm_da = srtm_download(buffalo_gdf, elevation_dir, 0.1)
 gdf_over_da(buffalo_gdf, srtm_da, cmap='terrain')
 ```
 
 ::: {.cell-output .cell-output-display}
-![](buffalo_files/figure-markdown/cell-16-output-1.png)
+![](buffalo_files/figure-markdown/cell-14-output-1.png)
 :::
 ::::
 
-:::: {.cell execution_count="16"}
+:::: {.cell execution_count="14"}
 ``` {.python .cell-code}
 slope_da = srtm_slope(srtm_da)
 gdf_over_da(buffalo_gdf, slope_da, cmap='terrain')
 ```
 
 ::: {.cell-output .cell-output-display}
-![](buffalo_files/figure-markdown/cell-17-output-1.png)
+![](buffalo_files/figure-markdown/cell-15-output-1.png)
 :::
 ::::
 
 Alternate plot only inside grasslands. Want to smooth over `buffalo_gdf`
 to fill in internal holes.
 
-:::: {.cell execution_count="17"}
+:::: {.cell execution_count="15"}
 ``` {.python .cell-code}
 import matplotlib.pyplot as plt # Overlay raster and vector data
 
@@ -448,7 +406,7 @@ plt.show()
 ```
 
 ::: {.cell-output .cell-output-display}
-![](buffalo_files/figure-markdown/cell-18-output-1.png)
+![](buffalo_files/figure-markdown/cell-16-output-1.png)
 :::
 ::::
 
@@ -457,7 +415,7 @@ plt.show()
 See
 [3_harmonize](https://github.com/byandell-envsys/habitatSuitability/blob/main/3_harmonize.ipynb).
 
-::: {.cell execution_count="18"}
+::: {.cell execution_count="16"}
 ``` {.python .cell-code}
 buffalo_sand_da = buffalo_da.rio.reproject_match(slope_da)
 maca_2027_da = maca_2027_year_da.rio.reproject_match(slope_da)
