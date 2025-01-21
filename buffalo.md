@@ -180,7 +180,7 @@ maca_df = process_maca({'buffalo': buffalo_gdf})
 maca_df[['site_name', 'scenario', 'climate', 'year']]
 ```
 
-::: {.cell-output .cell-output-display execution_count="8"}
+::: {.cell-output .cell-output-display execution_count="24"}
 <div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -237,7 +237,7 @@ elevation_dir = create_data_dir('habitat/srtm')
 elevation_dir
 ```
 
-::: {.cell-output .cell-output-display execution_count="11"}
+::: {.cell-output .cell-output-display execution_count="27"}
     '/Users/brianyandell/earth-analytics/data/habitat/srtm'
 :::
 ::::
@@ -266,26 +266,16 @@ for dataset in datasets:
 :::
 ::::
 
-::::: {.cell execution_count="13"}
+:::: {.cell execution_count="13"}
 ``` {.python .cell-code}
 srtm_da = srtm_download(buffalo_gdf, elevation_dir, 0.1)
 gdf_over_da(buffalo_gdf, srtm_da, cmap='terrain')
 ```
 
-::: {.cell-output .cell-output-stderr}
-    /users/brianyandell/miniconda3/envs/earth-analytics-python/lib/python3.11/site-packages/dask/dataframe/__init__.py:49: FutureWarning: 
-    Dask dataframe query planning is disabled because dask-expr is not installed.
-
-    You can install it with `pip install dask[dataframe]` or `conda install dask`.
-    This will raise in a future version.
-
-      warnings.warn(msg, FutureWarning)
-:::
-
 ::: {.cell-output .cell-output-display}
-![](buffalo_files/figure-markdown/fig-srtm-output-2.png){#fig-srtm}
+![](buffalo_files/figure-markdown/fig-srtm-output-1.png){#fig-srtm}
 :::
-:::::
+::::
 
 :::: {.cell execution_count="14"}
 ``` {.python .cell-code}

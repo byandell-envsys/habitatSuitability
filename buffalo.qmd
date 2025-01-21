@@ -1,8 +1,6 @@
 ---
 title: "Buffalo Grasslands"
-format:
-  html:
-    code-fold: true
+format: html
 ---
 
 # Buffalo Grasslands Habitat Suitability
