@@ -12,7 +12,7 @@ toc-title: Table of contents
 -   [Slope Elevation Measure](#slope-elevation-measure)
 -   [Harmonize Data](#harmonize-data)
 -   [Fuzzy Model](#fuzzy-model)
--   [Appendix: Technical Details](#appendix--technical-details)
+-   [Appendix: Technical Details](#appendix-technical-details)
 
 This project examines habitat suitability for [Blue
 Stem](https://greg.app/big-bluestem-soil/) in the [Buffalo
@@ -180,7 +180,7 @@ maca_df = process_maca({'buffalo': buffalo_gdf})
 maca_df[['site_name', 'scenario', 'climate', 'year']]
 ```
 
-::: {.cell-output .cell-output-display execution_count="14"}
+::: {.cell-output .cell-output-display execution_count="8"}
 <div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -237,7 +237,7 @@ elevation_dir = create_data_dir('habitat/srtm')
 elevation_dir
 ```
 
-::: {.cell-output .cell-output-display execution_count="17"}
+::: {.cell-output .cell-output-display execution_count="11"}
     '/Users/brianyandell/earth-analytics/data/habitat/srtm'
 :::
 ::::

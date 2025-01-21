@@ -14,7 +14,7 @@ format:
 - [Slope Elevation Measure](#slope-elevation-measure)
 - [Harmonize Data](#harmonize-data)
 - [Fuzzy Model](#fuzzy-model)
-- [Appendix: Technical Details](#appendix--technical-details)
+- [Appendix: Technical Details](#appendix-technical-details)
 
 This project examines habitat suitability for
 [Blue Stem](https://greg.app/big-bluestem-soil/)
