@@ -79,18 +79,31 @@ plot_redline(buffalo_gdf)
 
 ## Soil and Climate Measures
 
-Download soil raster layer for **sand** covering study area envelope using the [POLARIS dataset](http://hydrology.cee.duke.edu/POLARIS/PROPERTIES/v1.0/). Considering `sand` percentage `mean`. POLARIS data are available at 6 depths, and Bluestem has roots down to 5 feet (150 cm), which is the lowest strata measured (100-200 cm). Data in the [sand 100-200 cm directory](http://hydrology.cee.duke.edu/POLARIS/PROPERTIES/v1.0/sand/mean/100_200/) are saved as separate tif files by longitude. Buffalo Gap National Grassland is at (centroid) 43.4375° N, 103.0505° W, while Oglala National Grassland is at 42.9404° N, 103.5900° W. Below we use the `.total_bounds` extension on `buffalo_gdf` with the `merge_soil()` function in the [landmapy.habitat](https://github.com/byandell-envsys/landmapy/blob/main/landmapy/habitat.py) module to automate finding bounds.
+Download soil raster layer for **sand** covering study area envelope using the
+[POLARIS dataset](http://hydrology.cee.duke.edu/POLARIS/PROPERTIES/v1.0/).
+Considering `sand` percentage `mean`. POLARIS data are available at 6 depths,
+and Bluestem has roots down to 5 feet (150 cm),
+which is the lowest strata measured (100-200 cm).
+Data in the
+[sand 100-200 cm directory](http://hydrology.cee.duke.edu/POLARIS/PROPERTIES/v1.0/sand/mean/100_200/)
+are saved as separate tif files by longitude.
+Buffalo Gap National Grassland is at (centroid) 43.4375° N, 103.0505° W,
+while Oglala National Grassland is at 42.9404° N, 103.5900° W.
+Below we use the `.total_bounds` extension on `buffalo_gdf`
+with the `merge_soil()` function in the
+[landmapy.polaris](https://github.com/byandell-envsys/landmapy/blob/main/landmapy/polaris.py)
+module to automate finding bounds.
 
 ### Sand Soil Measure
 
 Get and show `mean` of `sand` at depth `100-200m` with functions
 
 -   `buffalo_da = merge_soil(buffalo_gdf, "sand", "mean", "100_200")`
--   `gdf_over_da(buffalo_gdf, buffalo_da)`
+-   `plot_gdf_da(buffalo_gdf, buffalo_da)`
 
 ```{python}
-from landmapy.habitat import merge_soil # merge soil data from GDF
-from landmapy.index import gdf_over_da # plot GDF over DA
+from landmapy.polaris import merge_soil # merge soil data from GDF
+from landmapy.index import plot_gdf_da # plot GDF over DA
 ```
 
 Merge soil tiles to create `buffalo_da`.
@@ -110,7 +123,7 @@ else:
 ```{python}
 #| label: fig-soil
 buffalo_gdf['color'] = ['white','red']
-gdf_over_da(buffalo_gdf, buffalo_da, cmap='viridis')
+plot_gdf_da(buffalo_gdf, buffalo_da, cmap='viridis')
 ```
 
 ### Climate Precipitation Measure
@@ -118,8 +131,8 @@ gdf_over_da(buffalo_gdf, buffalo_da, cmap='viridis')
 Project precipation `pr` under representative concentration pathway scenarios `rcp45` and `rcp85` for years `2026-2030`.
 
 ```{python}
-from landmapy.habitat import process_maca, maca_year
-from landmapy.index import gdf_over_da
+from landmapy.thredds import process_maca, maca_year
+from landmapy.index import plot_gdf_da
 ```
 
 ```{python}
@@ -130,11 +143,11 @@ maca_df[['site_name', 'scenario', 'climate', 'year']]
 ```{python}
 #| label: fig-maca
 maca_2027_year_da = maca_year(maca_df, 0, 2027) # 0 = `rcp85`, 1 = `rcp45`
-gdf_over_da(buffalo_gdf, maca_2027_year_da)
+plot_gdf_da(buffalo_gdf, maca_2027_year_da)
 ```
 
 Repeat for `rcp45`. Make nice plot pair.
-Will need to modify `gdf_over_da()` to return object
+Will need to modify `plot_gdf_da()` to return object
 rather than create plot.
 This probably has some subtleties.
 
@@ -142,8 +155,9 @@ This probably has some subtleties.
 
 ```{python}
 import earthaccess
-from landmapy.habitat import create_data_dir, srtm_download, srtm_slope
-from landmapy.index import gdf_over_da 
+from landmapy.habitat import create_data_dir
+from landmapy.srtm import srtm_download, srtm_slope
+from landmapy.index import plot_gdf_da 
 ```
 
 ```{python}
@@ -163,13 +177,13 @@ for dataset in datasets:
 ```{python}
 #| label: fig-srtm
 srtm_da = srtm_download(buffalo_gdf, elevation_dir, 0.1)
-gdf_over_da(buffalo_gdf, srtm_da, cmap='terrain')
+plot_gdf_da(buffalo_gdf, srtm_da, cmap='terrain')
 ```
 
 ```{python}
 #| label: fig-slope
 slope_da = srtm_slope(srtm_da)
-gdf_over_da(buffalo_gdf, slope_da, cmap='terrain')
+plot_gdf_da(buffalo_gdf, slope_da, cmap='terrain')
 ```
 
 Alternate plot only inside grasslands.
@@ -247,16 +261,17 @@ The pseudocode below relies on routines I developed with guidance from course in
 1.  Soil and Climate Measures
     1.  Soil measure is `mean` of `sand` at depth `100-200m` is created (ignoring `buffer` of `0.1`) with functions
         -   `buffalo_da = merge_soil(buffalo_gdf, "sand", "mean", "100_200")`
-        -   `gdf_over_da(buffalo_gdf, buffalo_da)`
+        -   `plot_gdf_da(buffalo_gdf, buffalo_da)`
     2.  Climate measures are projections of precipation `pr`
-        -   [representative concentration pathway](https://sedac.ciesin.columbia.edu/ddc/ar5_scenario_process/RCPs.html) scenarios `rcp45`, `rcp85`
+        -   [representative concentration pathway](https://sedac.ciesin.columbia.edu/ddc/ar5_scenario_process/RCPs.html)
+    - scenarios `rcp45`, `rcp85`
         -   `maca_df = process_maca({'buffalo': buffalo_gdf}, ['pr'], ['rcp85', 'rcp45'], [2026])`
         -   `maca_2027_year_da = maca_year(maca_df, 0, 2027)` \# 0 = `rcp85`, 1 = `rcp45`
-        -   `gdf_over_da(buffalo_gdf, maca_2027_year_da)`
+        -   `plot_gdf_da(buffalo_gdf, maca_2027_year_da)`
 2.  Digital Elevation measure `slope`
     -   `srtm_da = srtm_download(buffalo_gdf, elevation_dir, 0.1)`
     -   `slope_da = srtm_slope(srtm_da)`
-    -   `gdf_over_da(buffalo_gdf, slope_da)`
+    -   `plot_gdf_da(buffalo_gdf, slope_da)`
 3.  Harmonize data
     -   `buffalo_sand_da = buffalo_da.rio.reproject_match(slope_da)`
     -   `maca_2027_da = maca_2027_year_da.rio.reproject_match(slope_da)`
@@ -348,7 +363,8 @@ Need to find our area. The
 shows that we are in `UTM Zone 13` (and actually `13N` north).
 We need the projection (EPSG) for UTM zone 13N, which is `EPSG:32613` by looking at <https://epsg.io>.
 
-- Elevation from the SRTM (available from the [earthaccess API](https://github.com/nsidc/earthaccess/))
+- Elevation from the SRTM (available from the
+[earthaccess API](https://github.com/nsidc/earthaccess/))
 - Elsa video
     - [Shuttle Radar Topology Mission (SRTM)](https://cuboulder.zoom.us/rec/play/6fTikKcJPbGPB321iHmAa3dhMUR7r0n_zSZ3XxjL-SfBLpVfsrZJ1CrHlkOrK6jvTlYgztvvskfvaAGP.T6ixGvWj42gYShMV?canPlayFromShare=true&from=share_recording_detail&continueMode=true&componentName=rec-play&originRequestUrl=https%3A%2F%2Fcuboulder.zoom.us%2Frec%2Fshare%2FploG3HVb_qA0QU8eACIHMKtNbkiGFys7cmiBbTRryv3NUWBmKo-DXhzXdU3cbpz7.99x0PeiCHONSj6Ty)
 
@@ -368,7 +384,10 @@ To train a fuzzy logic habitat suitability model:
 
 1. Research S. nutans, and find out what optimal values are for each variable you are using (e.g. soil pH, slope, and current climatological annual precipitation). 
 2. For each **digital number** in each raster, assign a value from 0 to 1 for how close that grid square is to the optimum range (1=optimal, 0=incompatible). 
-3. Combine your layers by multiplying them together. This will give you a **single suitability number** for each square. Check out this [article about raster math](https://www.earthdatascience.org/courses/use-data-open-source-python/intro-raster-data-python/raster-data-processing/subtract-rasters-in-python/) for more info.
+3. Combine your layers by multiplying them together. This will give you a **single suitability number** for each square.
+Check out this
+[article about raster math](https://www.earthdatascience.org/courses/use-data-open-source-python/intro-raster-data-python/raster-data-processing/subtract-rasters-in-python/)
+for more info.
 4. Optionally, you may apply a threshold to make the most suitable areas pop on your map.
 
 **References**

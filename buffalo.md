@@ -113,7 +113,7 @@ Grassland is at (centroid) 43.4375° N, 103.0505° W, while Oglala
 National Grassland is at 42.9404° N, 103.5900° W. Below we use the
 `.total_bounds` extension on `buffalo_gdf` with the `merge_soil()`
 function in the
-[landmapy.habitat](https://github.com/byandell-envsys/landmapy/blob/main/landmapy/habitat.py)
+[landmapy.polaris](https://github.com/byandell-envsys/landmapy/blob/main/landmapy/polaris.py)
 module to automate finding bounds.
 
 ### Sand Soil Measure
@@ -121,12 +121,12 @@ module to automate finding bounds.
 Get and show `mean` of `sand` at depth `100-200m` with functions
 
 -   `buffalo_da = merge_soil(buffalo_gdf, "sand", "mean", "100_200")`
--   `gdf_over_da(buffalo_gdf, buffalo_da)`
+-   `plot_gdf_da(buffalo_gdf, buffalo_da)`
 
 ::: {.cell execution_count="4"}
 ``` {.python .cell-code}
-from landmapy.habitat import merge_soil # merge soil data from GDF
-from landmapy.index import gdf_over_da # plot GDF over DA
+from landmapy.polaris import merge_soil # merge soil data from GDF
+from landmapy.index import plot_gdf_da # plot GDF over DA
 ```
 :::
 
@@ -154,7 +154,7 @@ else:
 :::: {.cell execution_count="6"}
 ``` {.python .cell-code}
 buffalo_gdf['color'] = ['white','red']
-gdf_over_da(buffalo_gdf, buffalo_da, cmap='viridis')
+plot_gdf_da(buffalo_gdf, buffalo_da, cmap='viridis')
 ```
 
 ::: {.cell-output .cell-output-display}
@@ -169,8 +169,8 @@ scenarios `rcp45` and `rcp85` for years `2026-2030`.
 
 ::: {.cell execution_count="7"}
 ``` {.python .cell-code}
-from landmapy.habitat import process_maca, maca_year
-from landmapy.index import gdf_over_da
+from landmapy.thredds import process_maca, maca_year
+from landmapy.index import plot_gdf_da
 ```
 :::
 
@@ -208,7 +208,7 @@ maca_df[['site_name', 'scenario', 'climate', 'year']]
 :::: {.cell execution_count="9"}
 ``` {.python .cell-code}
 maca_2027_year_da = maca_year(maca_df, 0, 2027) # 0 = `rcp85`, 1 = `rcp45`
-gdf_over_da(buffalo_gdf, maca_2027_year_da)
+plot_gdf_da(buffalo_gdf, maca_2027_year_da)
 ```
 
 ::: {.cell-output .cell-output-display}
@@ -217,7 +217,7 @@ gdf_over_da(buffalo_gdf, maca_2027_year_da)
 ::::
 
 Repeat for `rcp45`. Make nice plot pair. Will need to modify
-`gdf_over_da()` to return object rather than create plot. This probably
+`plot_gdf_da()` to return object rather than create plot. This probably
 has some subtleties.
 
 ## Slope Elevation Measure
@@ -225,8 +225,9 @@ has some subtleties.
 ::: {.cell execution_count="10"}
 ``` {.python .cell-code}
 import earthaccess
-from landmapy.habitat import create_data_dir, srtm_download, srtm_slope
-from landmapy.index import gdf_over_da 
+from landmapy.habitat import create_data_dir
+from landmapy.srtm import srtm_download, srtm_slope
+from landmapy.index import plot_gdf_da 
 ```
 :::
 
@@ -269,7 +270,7 @@ for dataset in datasets:
 :::: {.cell execution_count="13"}
 ``` {.python .cell-code}
 srtm_da = srtm_download(buffalo_gdf, elevation_dir, 0.1)
-gdf_over_da(buffalo_gdf, srtm_da, cmap='terrain')
+plot_gdf_da(buffalo_gdf, srtm_da, cmap='terrain')
 ```
 
 ::: {.cell-output .cell-output-display}
@@ -280,7 +281,7 @@ gdf_over_da(buffalo_gdf, srtm_da, cmap='terrain')
 :::: {.cell execution_count="14"}
 ``` {.python .cell-code}
 slope_da = srtm_slope(srtm_da)
-gdf_over_da(buffalo_gdf, slope_da, cmap='terrain')
+plot_gdf_da(buffalo_gdf, slope_da, cmap='terrain')
 ```
 
 ::: {.cell-output .cell-output-display}
@@ -380,19 +381,20 @@ above have more detail on use and initial plots.
     1.  Soil measure is `mean` of `sand` at depth `100-200m` is created
         (ignoring `buffer` of `0.1`) with functions
         -   `buffalo_da = merge_soil(buffalo_gdf, "sand", "mean", "100_200")`
-        -   `gdf_over_da(buffalo_gdf, buffalo_da)`
+        -   `plot_gdf_da(buffalo_gdf, buffalo_da)`
     2.  Climate measures are projections of precipation `pr`
         -   [representative concentration
             pathway](https://sedac.ciesin.columbia.edu/ddc/ar5_scenario_process/RCPs.html)
-            scenarios `rcp45`, `rcp85`
+
+    -   scenarios `rcp45`, `rcp85`
         -   `maca_df = process_maca({'buffalo': buffalo_gdf}, ['pr'], ['rcp85', 'rcp45'], [2026])`
         -   `maca_2027_year_da = maca_year(maca_df, 0, 2027)` \# 0 =
             `rcp85`, 1 = `rcp45`
-        -   `gdf_over_da(buffalo_gdf, maca_2027_year_da)`
+        -   `plot_gdf_da(buffalo_gdf, maca_2027_year_da)`
 2.  Digital Elevation measure `slope`
     -   `srtm_da = srtm_download(buffalo_gdf, elevation_dir, 0.1)`
     -   `slope_da = srtm_slope(srtm_da)`
-    -   `gdf_over_da(buffalo_gdf, slope_da)`
+    -   `plot_gdf_da(buffalo_gdf, slope_da)`
 3.  Harmonize data
     -   `buffalo_sand_da = buffalo_da.rio.reproject_match(slope_da)`
     -   `maca_2027_da = maca_2027_year_da.rio.reproject_match(slope_da)`
