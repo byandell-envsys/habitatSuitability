@@ -52,6 +52,10 @@ The `plot_redline()` function is from
 module to visualize.
 
 ```{python}
+#pip install --quiet git+https://github.com/byandell-envsys/landmapy.git
+```
+
+```{python}
 import geopandas as gpd # read geojson file into gdf
 from landmapy.initial import create_data_dir # create (or retrieve) data directory
 from landmapy.plot import plot_gdf_state # plot gdf with state overlay
@@ -75,9 +79,12 @@ else:
     print("buffalo_gdf retrieved from StoreMagic")
 ```
 
+Black line separates South Dakota from Nebraska;
+red line outlines part of Pine Ridge Reservation.
+
 ```{python}
 #| label: fig-grasslands
-plot_gdf_state(buffalo_gdf)
+plot_gdf_state(buffalo_gdf, aiannh=True)
 ```
 
 ## Soil and Climate Measures

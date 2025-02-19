@@ -18,8 +18,10 @@ This project examines habitat suitability for [Blue
 Stem](https://greg.app/big-bluestem-soil/) in the [Buffalo
 Gap](https://www.fs.usda.gov/recarea/nebraska/recarea/?recid=30329) and
 [Oglala](https://www.fs.usda.gov/recarea/nebraska/recarea/?recid=30328)
-National Grasslands. These contiguous grasslands are located in [Oceti
-Sakowin
+National Grasslands. See also
+[PAD-US](https://www.usgs.gov/programs/gap-analysis-project/science/pad-us-data-overview).
+
+These contiguous grasslands are located in [Oceti Sakowin
 Oyate](https://americanindian.si.edu/nk360/plains-belonging-nation/oceti-sakowin),
 also known as the Lakota Nation or Great Sioux Nation, and in the US
 states of South Dakota and Nebraska. For more information see [Oceti
@@ -59,13 +61,19 @@ module to visualize.
 
 ::: {.cell execution_count="1"}
 ``` {.python .cell-code}
-import geopandas as gpd # read geojson file into gdf
-from landmapy.habitat import create_data_dir # create (or retrieve) data directory
-from landmapy.redline import plot_redline # plot gdf
+#pip install --quiet git+https://github.com/byandell-envsys/landmapy.git
 ```
 :::
 
-:::: {.cell execution_count="2"}
+::: {.cell execution_count="2"}
+``` {.python .cell-code}
+import geopandas as gpd # read geojson file into gdf
+from landmapy.initial import create_data_dir # create (or retrieve) data directory
+from landmapy.plot import plot_gdf_state # plot gdf with state overlay
+```
+:::
+
+:::: {.cell execution_count="3"}
 ``` {.python .cell-code}
 %store -r buffalo_gdf
 try:
@@ -89,9 +97,12 @@ else:
 :::
 ::::
 
-:::: {.cell execution_count="3"}
+Black line separates South Dakota from Nebraska; red line outlines part
+of Pine Ridge Reservation.
+
+:::: {.cell execution_count="4"}
 ``` {.python .cell-code}
-plot_redline(buffalo_gdf)
+plot_gdf_state(buffalo_gdf, aiannh=True)
 ```
 
 ::: {.cell-output .cell-output-display}
@@ -123,16 +134,16 @@ Get and show `mean` of `sand` at depth `100-200m` with functions
 -   `buffalo_da = merge_soil(buffalo_gdf, "sand", "mean", "100_200")`
 -   `plot_gdf_da(buffalo_gdf, buffalo_da)`
 
-::: {.cell execution_count="4"}
+::: {.cell execution_count="5"}
 ``` {.python .cell-code}
 from landmapy.polaris import merge_soil # merge soil data from GDF
-from landmapy.index import plot_gdf_da # plot GDF over DA
+from landmapy.plot import plot_gdf_da # plot GDF over DA
 ```
 :::
 
 Merge soil tiles to create `buffalo_da`.
 
-:::: {.cell execution_count="5"}
+:::: {.cell execution_count="6"}
 ``` {.python .cell-code}
 print(buffalo_gdf.total_bounds)
 %store -r buffalo_da
@@ -151,7 +162,7 @@ else:
 :::
 ::::
 
-:::: {.cell execution_count="6"}
+:::: {.cell execution_count="7"}
 ``` {.python .cell-code}
 buffalo_gdf['color'] = ['white','red']
 plot_gdf_da(buffalo_gdf, buffalo_da, cmap='viridis')
@@ -167,20 +178,19 @@ plot_gdf_da(buffalo_gdf, buffalo_da, cmap='viridis')
 Project precipation `pr` under representative concentration pathway
 scenarios `rcp45` and `rcp85` for years `2026-2030`.
 
-::: {.cell execution_count="7"}
+::: {.cell execution_count="8"}
 ``` {.python .cell-code}
 from landmapy.thredds import process_maca, maca_year
-from landmapy.index import plot_gdf_da
 ```
 :::
 
-:::: {.cell execution_count="8"}
+:::: {.cell execution_count="9"}
 ``` {.python .cell-code}
 maca_df = process_maca({'buffalo': buffalo_gdf})
 maca_df[['site_name', 'scenario', 'climate', 'year']]
 ```
 
-::: {.cell-output .cell-output-display execution_count="24"}
+::: {.cell-output .cell-output-display execution_count="26"}
 <div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -205,7 +215,7 @@ maca_df[['site_name', 'scenario', 'climate', 'year']]
 :::
 ::::
 
-:::: {.cell execution_count="9"}
+:::: {.cell execution_count="10"}
 ``` {.python .cell-code}
 maca_2027_year_da = maca_year(maca_df, 0, 2027) # 0 = `rcp85`, 1 = `rcp45`
 plot_gdf_da(buffalo_gdf, maca_2027_year_da)
@@ -222,28 +232,26 @@ has some subtleties.
 
 ## Slope Elevation Measure
 
-::: {.cell execution_count="10"}
+::: {.cell execution_count="11"}
 ``` {.python .cell-code}
 import earthaccess
-from landmapy.habitat import create_data_dir
 from landmapy.srtm import srtm_download, srtm_slope
-from landmapy.index import plot_gdf_da 
 ```
 :::
 
-:::: {.cell execution_count="11"}
+:::: {.cell execution_count="12"}
 ``` {.python .cell-code}
 project_dir = create_data_dir('habitat')
 elevation_dir = create_data_dir('habitat/srtm')
 elevation_dir
 ```
 
-::: {.cell-output .cell-output-display execution_count="27"}
+::: {.cell-output .cell-output-display execution_count="29"}
     '/Users/brianyandell/earth-analytics/data/habitat/srtm'
 :::
 ::::
 
-:::: {.cell execution_count="12"}
+:::: {.cell execution_count="13"}
 ``` {.python .cell-code}
 earthaccess.login()
 datasets = earthaccess.search_datasets(keyword='SRTM DEM', count=11)
@@ -267,7 +275,7 @@ for dataset in datasets:
 :::
 ::::
 
-:::: {.cell execution_count="13"}
+:::: {.cell execution_count="14"}
 ``` {.python .cell-code}
 srtm_da = srtm_download(buffalo_gdf, elevation_dir, 0.1)
 plot_gdf_da(buffalo_gdf, srtm_da, cmap='terrain')
@@ -278,7 +286,7 @@ plot_gdf_da(buffalo_gdf, srtm_da, cmap='terrain')
 :::
 ::::
 
-:::: {.cell execution_count="14"}
+:::: {.cell execution_count="15"}
 ``` {.python .cell-code}
 slope_da = srtm_slope(srtm_da)
 plot_gdf_da(buffalo_gdf, slope_da, cmap='terrain')
@@ -292,7 +300,7 @@ plot_gdf_da(buffalo_gdf, slope_da, cmap='terrain')
 Alternate plot only inside grasslands. Want to smooth over `buffalo_gdf`
 to fill in internal holes.
 
-:::: {.cell execution_count="15"}
+:::: {.cell execution_count="16"}
 ``` {.python .cell-code}
 import matplotlib.pyplot as plt # Overlay raster and vector data
 
@@ -312,7 +320,7 @@ plt.show()
 See
 [3_harmonize](https://github.com/byandell-envsys/habitatSuitability/blob/main/3_harmonize.ipynb).
 
-::: {.cell execution_count="16"}
+::: {.cell execution_count="17"}
 ``` {.python .cell-code}
 buffalo_sand_da = buffalo_da.rio.reproject_match(slope_da)
 maca_2027_da = maca_2027_year_da.rio.reproject_match(slope_da)
@@ -326,7 +334,9 @@ maca_2027_da = maca_2027_year_da.rio.reproject_match(slope_da)
 -   multiply them together
 
 See
-[4_build](https://github.com/byandell-envsys/habitatSuitability/blob/main/4_build.ipynb)
+
+-   [4_build](https://github.com/byandell-envsys/habitatSuitability/blob/main/4_build.ipynb)
+-   [SciKit Fuzzy](https://pypi.org/project/scikit-fuzzy/)
 
 ## Appendix: Technical Details
 
