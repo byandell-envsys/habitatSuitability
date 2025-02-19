@@ -23,6 +23,9 @@ in the
 and
 [Oglala](https://www.fs.usda.gov/recarea/nebraska/recarea/?recid=30328)
 National Grasslands.
+See also
+[PAD-US](https://www.usgs.gov/programs/gap-analysis-project/science/pad-us-data-overview).
+
 These contiguous grasslands are located in
 [Oceti Sakowin Oyate](https://americanindian.si.edu/nk360/plains-belonging-nation/oceti-sakowin), also known as the Lakota Nation or Great Sioux Nation, and in the US states of South Dakota and Nebraska.
 For more information see
@@ -50,8 +53,8 @@ module to visualize.
 
 ```{python}
 import geopandas as gpd # read geojson file into gdf
-from landmapy.habitat import create_data_dir # create (or retrieve) data directory
-from landmapy.redline import plot_redline # plot gdf
+from landmapy.initial import create_data_dir # create (or retrieve) data directory
+from landmapy.plot import plot_gdf_state # plot gdf with state overlay
 ```
 
 ```{python}
@@ -74,7 +77,7 @@ else:
 
 ```{python}
 #| label: fig-grasslands
-plot_redline(buffalo_gdf)
+plot_gdf_state(buffalo_gdf)
 ```
 
 ## Soil and Climate Measures
@@ -103,7 +106,7 @@ Get and show `mean` of `sand` at depth `100-200m` with functions
 
 ```{python}
 from landmapy.polaris import merge_soil # merge soil data from GDF
-from landmapy.index import plot_gdf_da # plot GDF over DA
+from landmapy.plot import plot_gdf_da # plot GDF over DA
 ```
 
 Merge soil tiles to create `buffalo_da`.
@@ -132,7 +135,6 @@ Project precipation `pr` under representative concentration pathway scenarios `r
 
 ```{python}
 from landmapy.thredds import process_maca, maca_year
-from landmapy.index import plot_gdf_da
 ```
 
 ```{python}
@@ -155,9 +157,7 @@ This probably has some subtleties.
 
 ```{python}
 import earthaccess
-from landmapy.habitat import create_data_dir
 from landmapy.srtm import srtm_download, srtm_slope
-from landmapy.index import plot_gdf_da 
 ```
 
 ```{python}
@@ -213,7 +213,10 @@ maca_2027_da = maca_2027_year_da.rio.reproject_match(slope_da)
 -   use hill functions to transform harmonized DataArrays into 0-1 DataArrays
 -   multiply them together
 
-See [4_build](https://github.com/byandell-envsys/habitatSuitability/blob/main/4_build.ipynb)
+See
+
+- [4_build](https://github.com/byandell-envsys/habitatSuitability/blob/main/4_build.ipynb)
+- [SciKit Fuzzy](https://pypi.org/project/scikit-fuzzy/)
 
 ## Appendix: Technical Details
 
