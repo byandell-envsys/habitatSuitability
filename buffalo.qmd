@@ -145,13 +145,13 @@ from landmapy.thredds import process_maca, maca_year
 ```
 
 ```{python}
-maca_df = process_maca({'buffalo': buffalo_gdf})
-maca_df[['site_name', 'scenario', 'climate', 'year']]
+info_df, maca_da = process_maca({'buffalo': buffalo_gdf})
+info_df
 ```
 
 ```{python}
 #| label: fig-maca
-maca_2027_year_da = maca_year(maca_df, 0, 2027) # 0 = `rcp85`, 1 = `rcp45`
+maca_2027_year_da = maca_year(maca_da[0], 2027) # 0 = `rcp85`, 1 = `rcp45`
 plot_gdf_da(buffalo_gdf, maca_2027_year_da)
 ```
 
@@ -275,8 +275,8 @@ The pseudocode below relies on routines I developed with guidance from course in
     2.  Climate measures are projections of precipation `pr`
         -   [representative concentration pathway](https://sedac.ciesin.columbia.edu/ddc/ar5_scenario_process/RCPs.html)
     - scenarios `rcp45`, `rcp85`
-        -   `maca_df = process_maca({'buffalo': buffalo_gdf}, ['pr'], ['rcp85', 'rcp45'], [2026])`
-        -   `maca_2027_year_da = maca_year(maca_df, 0, 2027)` \# 0 = `rcp85`, 1 = `rcp45`
+        -   `info_df, maca_da = process_maca({'buffalo': buffalo_gdf}, ['pr'], ['rcp85', 'rcp45'], [2026])`
+        -   `maca_2027_year_da = maca_year(maca_da[0], 2027)` \# 0 = `rcp85`, 1 = `rcp45`
         -   `plot_gdf_da(buffalo_gdf, maca_2027_year_da)`
 2.  Digital Elevation measure `slope`
     -   `srtm_da = srtm_download(buffalo_gdf, elevation_dir, 0.1)`
